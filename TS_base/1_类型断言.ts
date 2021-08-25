@@ -22,3 +22,5 @@ function printMessage(msg?: string) {
     console.log(msg!.length);
 }
 printMessage()
+
+export {}

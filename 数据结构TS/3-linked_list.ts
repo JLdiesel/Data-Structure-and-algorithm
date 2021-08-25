@@ -1,16 +1,16 @@
-class Nodes {
-    element: unknown;
-    prev: Nodes
-    next: Nodes
-    constructor(prev, element, next) {
+class Nodes <E>{
+    element: E;
+    prev: Nodes<E>
+    next: Nodes<E>
+    constructor(prev, element:E, next) {
         this.prev = prev
         this.element = element;
         this.next = next
     }
 }
-class LinkedList {
-    private head: Nodes;
-    private last: Nodes
+class LinkedList<E> {
+    private head: Nodes<E>;
+    private last:  Nodes<E>
     private length: number;
     constructor() {
         this.head = null;
@@ -18,17 +18,17 @@ class LinkedList {
         this.length = 0;
     }
     //在最后添加
-    append(element: unknown) {
+    append(element: E) {
         this.insert(this.length, element)
     }
     //特定位置插入
-    insert(position: number, element: unknown) {
-
+    insert(position: number, element: E) {
         //判断越界
         this.xiabiao(position);
         const newNode = new Nodes(null, element, null)
         if (position === 0) {
             if (!this.head) {
+                
                 this.head = newNode
                 this.last = newNode
             } else {
@@ -44,8 +44,8 @@ class LinkedList {
         }
         else {
             let index = 0
-            let current: Nodes = this.head
-            let previous: Nodes = null;
+            let current:  Nodes<E> = this.head
+            let previous:  Nodes<E> = null;
             while (index++ < position) {
                 previous = current;
                 current = current.next
@@ -57,22 +57,49 @@ class LinkedList {
         }
         this.length++
     }
+    get(index:number):Nodes<E> {
+        return  this.getNode(index)
+    }
+    set(index: number, element: E) {
+        const old:E =this.getNode(index).element
+        this.getNode(index).element = element;
+        return old
+    }
     clear() {
         this.length = 0;
         this.head = this.last = null
     }
-    remove() {
-
+    private getNode(index: number): Nodes<E>{
+        this.xiabiao(index)
+        let node = this.head
+        for (let i = 0; i < index; i++){
+            node=node.next
+        }
+        return node
+    }
+    remove(node:Nodes<E>) {
+        if (this.length === 1) {
+            this.head = null;
+            this.last=null
+        } else {
+            let prev = node.prev;
+            let next = node.next;
+            prev.next = next;
+            next.prev = prev;;
+            if (node === this.head) {
+                this.head=next
+            }
+            if (node === this.last) {
+                this.last=prev
+            }
+        }
+        this.length--
+        return node.element
     }
     private xiabiao(position): Error {
         if (position < 0 || position > this.length) return (new Error('下标越界'))
     }
 }
-let list = new LinkedList()
-list.append('1');
-list.append('2');
-list.append('3');
-list.insert(1, '123')
-list.insert(1, '1234')
-list.clear()
-console.log(list);
+
+export default LinkedList
+

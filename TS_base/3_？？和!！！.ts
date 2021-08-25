@@ -11,8 +11,8 @@ if (arr1) {
     console.log(123);
 
 }
-console.log([] == ![]);
-console.log([] == true);
+// console.log([] == ![]);
+// console.log([] == true);
 
 
 let message: string | null = null

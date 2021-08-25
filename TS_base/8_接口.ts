@@ -7,10 +7,7 @@ interface IInfoType {
     friend?: {
         name: string
     }
-    swimming(){
-    console.log('swimming');
-    
-    }
+    swimming:()=>void
 }
 class Info implements IInfoType {
     name: string;
@@ -25,12 +22,12 @@ const info: IInfoType = {
     age: 18,
     friend: {
         name: 'lauv'
+    }, swimming() {
+    
     }
+// info.name='jl'  readonly
 }
-
 console.log(info.friend?.name);
 console.log(info.name);
 info.age = 444
-// info.name='jl'  readonly
-
-
+export{}

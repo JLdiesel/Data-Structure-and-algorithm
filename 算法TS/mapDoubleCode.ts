@@ -1,13 +1,4 @@
 function mapDoubleCode(str: string): boolean {
-    /*    while (st.includes('{}') || st.includes('[]') || st.includes('()')) {
-           st = st.replace('{}', '')
-            st=st.replace('[]','')
-           st = st.replace('()', '')
-      }
-       if (st.length) {
-          return false
-      }
-       return true */
     const map :Map<string,string>= new Map();
     map.set('{', '}')
     map.set('[', ']')

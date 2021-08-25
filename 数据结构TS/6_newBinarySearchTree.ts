@@ -64,7 +64,7 @@ class BrinarySearchTree<E> extends BrinaryTree<E> {
 
     return null;
   }
-  protected afterRemove(node: Node<E>) {}
+  protected afterRemove(node: Node<E>, replacement: Node<E>) {}
   //根据节点删除
   private removeNode(node: Node<E>): void {
     if (node === null) return;
@@ -97,11 +97,11 @@ class BrinarySearchTree<E> extends BrinaryTree<E> {
       } else if (node === node.parent.right) {
         node.parent.right = replacement;
       }
-      this.afterRemove(node);
+      this.afterRemove(node, replacement);
     } else if (node.parent === null) {
       //node是叶子节点且是根节点
       this.root = null;
-      this.afterRemove(node);
+      this.afterRemove(node, null);
     } else {
       //node是叶子节点但不是根节点
       if (node === node.parent.Left) {
@@ -109,7 +109,7 @@ class BrinarySearchTree<E> extends BrinaryTree<E> {
       } else {
         node.parent.right = null;
       }
-      this.afterRemove(node);
+      this.afterRemove(node, null);
     }
   }
   //外部使用元素删除节点
@@ -138,13 +138,12 @@ class BrinarySearchTree<E> extends BrinaryTree<E> {
 }
 let arr = [7, 4, 9, 2, 5];
 
-// const BST2 = new BrinarySearchTree((e1: number, e2: number) => {
-//   return e1 - e2;
-// });
-// arr.forEach((item) => {
-//   BST2.add(item);
-// });
-// BST2.remove(4);
-// console.log(BST2);
+const BST2 = new BrinarySearchTree((e1: number, e2: number) => {
+  return e1 - e2;
+});
+arr.forEach((item) => {
+  BST2.add(item);
+});
+console.log(BST2);
 
 export default BrinarySearchTree;

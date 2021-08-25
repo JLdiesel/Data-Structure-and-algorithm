@@ -36,7 +36,8 @@ class RBTree<E> extends BBST<E> {
   private isRed(node: Node<E>): boolean {
     return this.colorOf(node) === RBTree.RED;
   }
-  afterAddNode(node: Node<E>) {
+  //node 添加的节点
+  protected afterAddNode(node: Node<E>) {
     const parent: Node<E> = node.parent;
     //如果parent为空，则添加的为根节点
     if (parent === null) {
@@ -80,7 +81,17 @@ class RBTree<E> extends BBST<E> {
       this.rotateLeft(grand);
     }
   }
-  afterRemove(node: Node<E>) {}
+  //node 被删除的节点
+  protected afterRemove(node: Node<E>, replacement: Node<E>) {
+    if (this.isRed(node)) return; //如果删除的是红色,直接返回
+    if (this.isRed(replacement)) {
+      this.black(replacement);
+      return; //用以取代的node的子节点是红色
+    }
+    //删除黑色叶子节点
+    const parent: Node<E> = node.parent;
+    if (parent === null) return; //删除的是根节点
+  }
 }
 class RBNode<E> extends Node<E> {
   color: boolean;
@@ -89,13 +100,5 @@ class RBNode<E> extends Node<E> {
     this.color = RBTree.RED;
   }
 }
-const RBT = new RBTree((e1: number, e2: number) => {
-  return e1 - e2;
-});
 
-let arr = [5, 10, 11, 12, 15, 17, 18, 30];
-arr.forEach((item) => {
-  RBT.add(item);
-});
-console.log(RBT);
 export default RBTree;

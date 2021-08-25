@@ -2,7 +2,7 @@ import BrinarySearchTree from './6_newBinarySearchTree';
 import Node from './TreeNode';
 
 export class BBST<E> extends BrinarySearchTree<E> {
-  root: Node<E>;
+  declare root: Node<E>;
   constructor(compare?: (n1: E, n2: E) => number) {
     super(compare);
   }

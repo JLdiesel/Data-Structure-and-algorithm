@@ -13,9 +13,9 @@
 //前序遍历
 var invertTree = function (root) {
     if (root === null) return root
-    let roots = root.left;
+    let cpm = root.left;
     root.left = root.right;
-    root.right = roots
+    root.right = cpm
     invertTree(root.left)
     invertTree(root.right)
     return root
@@ -25,9 +25,9 @@ var invertTree = function (root) {
 var invertTree = function (root) {
     if (root === null) return root
     invertTree(root.left)
-    let roots = root.left;
+    let cpm = root.left;
     root.left = root.right;
-    root.right = roots
+    root.right = cpm
     invertTree(root.left)
     return root
 };
@@ -39,9 +39,9 @@ var invertTree = function (root) {
     arr.push(root)
     while (arr.length !== 0) {
         node = arr.shift()
-        let roots = node.left;
+        let cmp = node.left;
         node.left = node.right;
-        node.right = roots
+        node.right = cmp
         if (node.left !== null) {
             arr.push(node.left)
         }

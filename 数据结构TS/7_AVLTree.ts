@@ -1,10 +1,10 @@
 import { BBST } from './9_BBST';
 import TreeNode from './TreeNode';
 class AVLTreeNode<E> extends TreeNode<E> {
-  Left: AVLTreeNode<E>;
-  right: AVLTreeNode<E>;
+  declare Left: AVLTreeNode<E>;
+  declare right: AVLTreeNode<E>;
   height: number;
-  parent: AVLTreeNode<E>;
+  declare parent: AVLTreeNode<E>;
   constructor(element: E, parent: AVLTreeNode<E>) {
     super(element, parent);
     this.height = 1;
@@ -29,7 +29,7 @@ class AVLTreeNode<E> extends TreeNode<E> {
 }
 
 class AVLTree<E> extends BBST<E> {
-  root: AVLTreeNode<E>;
+  declare root: AVLTreeNode<E>;
   constructor() {
     super();
   }
