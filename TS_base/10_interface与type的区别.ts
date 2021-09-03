@@ -11,3 +11,5 @@ const foo: IFOO = {
     name: '123',
     age: 18
 }
+//interface 无法实现联合类型
+type Favorite = string | number

@@ -81,16 +81,158 @@ class RBTree<E> extends BBST<E> {
       this.rotateLeft(grand);
     }
   }
-  //node 被删除的节点
-  protected afterRemove(node: Node<E>, replacement: Node<E>) {
-    if (this.isRed(node)) return; //如果删除的是红色,直接返回
-    if (this.isRed(replacement)) {
-      this.black(replacement);
+  //node 被删除的节点 sibling兄弟节点 
+  //用replacement版本
+  // protected afterRemove(node: Node<E>, replacement: Node<E>) {
+  //   if (this.isRed(node)) return; //如果删除的是红色,直接返回
+  //   if (this.isRed(replacement)) {
+  //     this.black(replacement);
+  //     return; //用以取代的node的子节点是红色
+  //   }
+  //   //删除黑色叶子节点
+  //   const parent: Node<E> = node.parent;
+  //   if (parent === null) return; //删除的是根节点
+  //   const left: boolean = parent.Left === null ||node.isLeftChild();
+  //   let sibling: Node<E> = left?parent.right:parent.Left;
+  //   if (left) { //删除节点在左，兄弟节点在右
+  //      if (this.isRed(sibling)) { //兄弟节点是红色
+  //       //转换为兄弟为黑色的情况
+  //       this.black(sibling)
+  //       this.red(parent)
+  //       this.rotateLeft(parent)
+  //       sibling = parent.right
+        
+  //     }//兄弟为黑色
+  //     if (this.isBlack(sibling.Left) && this.isBlack(sibling.right)) {
+  //       //兄弟没有一个红色字节点  父节点向下合并
+  //       const parentIsBlack=this.isBlack(parent)
+  //       this.black(parent);
+  //       this.red(sibling)
+  //       if (parentIsBlack) {
+  //           this.afterRemove(parent,null)
+  //       }
+  //     } else {
+  //       //兄弟节点至少有一个红色字节点 向兄弟节点借元素
+  //       if(this.isBlack(sibling.right)) //如果左边是黑色证明右边是红色
+  //       {
+  //         //把右边为红色的情况转换为左边为红色的情况统一处理
+  //         this.rotateRight(sibling)
+  //         sibling=sibling.parent
+  //       }
+  //         this.color(sibling, this.colorOf(parent))
+  //       this.black(parent)
+  //       this.black(sibling.right)
+  //       this.rotateLeft(parent)
+      
+  //     }
+  //   } else {//删除节点在右，兄弟节点在左
+  //     if (this.isRed(sibling)) { //兄弟节点是红色
+  //       //转换为兄弟为黑色的情况
+  //       this.black(sibling)
+  //       this.red(parent)
+  //       this.rotateRight(parent)
+  //       sibling = parent.Left
+        
+  //     }//兄弟为黑色
+  //     if (this.isBlack(sibling.Left) && this.isBlack(sibling.right)) {
+  //       //兄弟没有一个红色字节点  父节点向下合并
+  //       const parentIsBlack=this.isBlack(parent)
+  //       this.black(parent);
+  //       this.red(sibling)
+  //       if (parentIsBlack) {
+  //           this.afterRemove(parent,null)
+  //       }
+  //     } else {
+  //       //兄弟节点至少有一个红色字节点 向兄弟节点借元素
+  //       if(this.isBlack(sibling.Left)) //如果左边是黑色证明右边是红色
+  //       {
+  //         //把右边为红色的情况转换为左边为红色的情况统一处理
+  //         this.rotateLeft(sibling)
+  //         sibling=sibling.parent
+  //       }
+  //          this.color(sibling, this.colorOf(parent))
+  //       this.black(parent)
+  //       this.black(sibling.Left)
+  //           this.rotateLeft(parent)
+     
+  //     }
+      
+  //   }
+  // }
+   protected afterRemove(node: Node<E>) {
+     if (this.isRed(node)) {
+      this.black(node);
       return; //用以取代的node的子节点是红色
     }
     //删除黑色叶子节点
     const parent: Node<E> = node.parent;
     if (parent === null) return; //删除的是根节点
+    const left: boolean = parent.Left === null ||node.isLeftChild();
+    let sibling: Node<E> = left?parent.right:parent.Left;
+    if (left) { //删除节点在左，兄弟节点在右
+       if (this.isRed(sibling)) { //兄弟节点是红色
+        //转换为兄弟为黑色的情况
+        this.black(sibling)
+        this.red(parent)
+        this.rotateLeft(parent)
+        sibling = parent.right
+        
+      }//兄弟为黑色
+      if (this.isBlack(sibling.Left) && this.isBlack(sibling.right)) {
+        //兄弟没有一个红色字节点  父节点向下合并
+        const parentIsBlack=this.isBlack(parent)
+        this.black(parent);
+        this.red(sibling)
+        if (parentIsBlack) {
+            this.afterRemove(parent)
+        }
+      } else {
+        //兄弟节点至少有一个红色字节点 向兄弟节点借元素
+        if(this.isBlack(sibling.right)) //如果左边是黑色证明右边是红色
+        {
+          //把右边为红色的情况转换为左边为红色的情况统一处理
+          this.rotateRight(sibling)
+          sibling=sibling.parent
+        }
+          this.color(sibling, this.colorOf(parent))
+        this.black(parent)
+        this.black(sibling.right)
+        this.rotateLeft(parent)
+      
+      }
+    } else {//删除节点在右，兄弟节点在左
+      if (this.isRed(sibling)) { //兄弟节点是红色
+        //转换为兄弟为黑色的情况
+        this.black(sibling)
+        this.red(parent)
+        this.rotateRight(parent)
+        sibling = parent.Left
+        
+      }//兄弟为黑色
+      if (this.isBlack(sibling.Left) && this.isBlack(sibling.right)) {
+        //兄弟没有一个红色字节点  父节点向下合并
+        const parentIsBlack=this.isBlack(parent)
+        this.black(parent);
+        this.red(sibling)
+        if (parentIsBlack) {
+            this.afterRemove(parent)
+        }
+      } else {
+        //兄弟节点至少有一个红色字节点 向兄弟节点借元素
+        if(this.isBlack(sibling.Left)) //如果左边是黑色证明右边是红色
+        {
+          //把右边为红色的情况转换为左边为红色的情况统一处理
+          this.rotateLeft(sibling)
+          sibling=sibling.parent
+        }
+           this.color(sibling, this.colorOf(parent))
+        this.black(parent)
+        this.black(sibling.Left)
+            this.rotateLeft(parent)
+     
+      }
+      
+    }
   }
 }
 class RBNode<E> extends Node<E> {

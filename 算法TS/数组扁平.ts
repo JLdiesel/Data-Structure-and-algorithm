@@ -6,10 +6,8 @@ function flattern(array: Array<any>): Array<any> {
     return [].concat(...array.map(flattern))
 }
 
-
-
-
 // console.log(flattern([1, [2, 3, [8, 6, [81]]]]));
 
 let b = [1, [2, 3, [8, 6, [81]]]]
 console.log(b.flat(Infinity) as number[]);
+export {}

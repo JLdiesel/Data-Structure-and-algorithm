@@ -64,7 +64,7 @@ class BrinarySearchTree<E> extends BrinaryTree<E> {
 
     return null;
   }
-  protected afterRemove(node: Node<E>, replacement: Node<E>) {}
+  protected afterRemove(node: Node<E>) {}
   //根据节点删除
   private removeNode(node: Node<E>): void {
     if (node === null) return;
@@ -97,11 +97,11 @@ class BrinarySearchTree<E> extends BrinaryTree<E> {
       } else if (node === node.parent.right) {
         node.parent.right = replacement;
       }
-      this.afterRemove(node, replacement);
+      this.afterRemove(replacement);
     } else if (node.parent === null) {
       //node是叶子节点且是根节点
       this.root = null;
-      this.afterRemove(node, null);
+      this.afterRemove(node);
     } else {
       //node是叶子节点但不是根节点
       if (node === node.parent.Left) {
@@ -109,7 +109,7 @@ class BrinarySearchTree<E> extends BrinaryTree<E> {
       } else {
         node.parent.right = null;
       }
-      this.afterRemove(node, null);
+      this.afterRemove(node);
     }
   }
   //外部使用元素删除节点
