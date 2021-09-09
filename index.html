@@ -24,6 +24,32 @@
       a()
     }
     abs(a) */
+    /* const a = null
+    const b = null
+    console.log(a === b);
+    console.log(+0 === -0);
+    console.log(null === null);
+    console.log(undefined === undefined); */
+    /* console.log(Object.prototype.toString.call({
+      a: 123,
+      b: 213
+    }) === '[object Object]');
+    console.log(Object.prototype.toString.call('123') === '[object String]');
+    console.log(Object.prototype.toString.call(null) === '[object Null]');
+    console.log(Object.prototype.toString.call(123));
+    console.log(typeof '123');
+    console.log(typeof 123);
+    console.log(typeof null);
+    console.log(typeof {
+      a: 12,
+      b: 2
+    }); */
+
+    function foo() {
+      console.log(this);
+    }
+    const nav = foo.bind('123')
+    const bar = new nav
   </script>
 </body>
 
