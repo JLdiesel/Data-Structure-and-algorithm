@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src="./Vnode_h_patch.js"></script>
+    <!-- <script src="./render.js"></script> -->
+    <script>
+        const vnode = h('div', {
+            class: 'jl',
+        }, [h('h2', {
+            class: 'lauv',
+        }, '1234'), h('h2', null, '789')])
+
+        const vnode2 = h('div', {
+            class: 'names',
+        }, [vnode, h('h1', null, '456'), h('h1', null, '123')])
+        mount(vnode, document.getElementById('app'))
+        setTimeout(() => {
+            patch(vnode, vnode2)
+        }, 2000);
+    </script>
+</body>
+
+</html>

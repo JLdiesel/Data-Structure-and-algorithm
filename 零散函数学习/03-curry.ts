@@ -7,10 +7,10 @@ type FNCurry = (...args: Array<any>) => any;
 function curry(f: FNCurry) {
   const g = (...args: Array<any>) => {
     if (args.length >= f.length) {
-      return f(...args)
+      return f.call(this,...args)
     }
     return (...other:Array<any>) => {
-      return  g(...args,...other)
+      return  g.call(this,...args,...other)
     }
   }
   return g

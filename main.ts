@@ -1,4 +1,4 @@
-import RBTree from './数据结构TS/10_Map'
+/* import RBTree from './数据结构TS/10_Map'
 const RBT = new RBTree((e1: number, e2: number) => {
   return e1 - e2;
 });
@@ -13,5 +13,29 @@ RBT.remove(11)
 console.log(RBT.size);
 
 console.log(RBT);
+ */
+import HashMap from './数据结构TS/11_HashMap'
+const map = new HashMap();
+
+map.put('123','123')
+map.put('123',123)
+map.put('13','123')
+map.put(123,'123')
+map.put(166,'123')
+map.put({name:'jl'},'123')
+map.put({name:'jl'},'333')
+map.put(123, '163')
+console.log(map.get('123'));
+console.log(map.get({name:'jl'}));
+console.log(map.get(123));
+map.remove('123')
+map.remove(123)
+console.log(map.get(123));
+
+map.traversal()
+console.log(map);
+
+
+
 
 

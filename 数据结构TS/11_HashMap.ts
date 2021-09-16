@@ -2,20 +2,20 @@ class MapA<K, V>{
   static RED: boolean = false;
   static BLACK: boolean = true;
   size: number;
-  root: MTNode<K, V>
   private table: MTNode<K,V>[]
   private compare: (n1: K, n2: K) => number;
+  //默认容量
+  private DEFAULT_CAPACITY=1<<4
   constructor(compare?: (n1: K, n2: K) => number) {
     this.size = 0
     this.compare = compare;
-    this.root = null
-    this.table=[]
+    this.table=new Array(this.DEFAULT_CAPACITY).fill(null)
   }
   isEmpty() {
       return this.size===0
   }
   clear() {
-    this.table = []
+    this.table=new Array(this.DEFAULT_CAPACITY)
     this.size=0
   }
    protected createNode(key: K,value:V, parent: MTNode<K, V>): MTNode<K, V> {
@@ -67,7 +67,7 @@ class MapA<K, V>{
     protected afterRotate(grand: MTNode<K, V>, parentNode: MTNode<K, V>, child: MTNode<K, V>) {
     parentNode.parent = grand.parent;
     //grand是root节点
-    if (grand.parent === null) this.root = parentNode;
+    if (grand.parent === null) this.table[this.index(parentNode.key)] = parentNode;
     else {
       grand.isRightChild()
         ? (grand.parent.right = parentNode)
@@ -79,11 +79,13 @@ class MapA<K, V>{
 
     grand.parent = parentNode;
   }
-  private index(key: K) {
-    if (key === null) return 0;
-    return this.hashCode(key)
+   index(key: K):number {
+     if (key === null) return 0;
+     let hash = this.hashCode(key)
+
+    return (hash^(hash>>>16)) & (this.table.length-1)
   }
-  private hashCode(key: K) {
+  private hashCode(key: K):number {
     let hashCode = 0;
     switch (typeof key ) {
       case 'number':
@@ -93,42 +95,49 @@ class MapA<K, V>{
         }
         const str=key.toString()
          for (let i = 0; i < str.length; i++) {
-          hashCode=31*hashCode+str.charCodeAt(i)
+          hashCode=(hashCode<<5)-hashCode+str.charCodeAt(i)
         }
         break;
       case 'string':
         for (let i = 0; i < key.length; i++) {
-          hashCode=31*hashCode+key.charCodeAt(i)
+          // hashCode=31*hashCode+key.charCodeAt(i)
+          hashCode=(hashCode<<5)-hashCode+key.charCodeAt(i)
         }
         break;
       case 'object':
-        if (key === null) {
-          hashCode = 0
+          if (key === null) return 0;
+          for (const keys in key) {
+            if (key.hasOwnProperty(keys)) {
+              hashCode = (hashCode << 5) - hashCode + this.hashCode(key[keys] as unknown as K)
+            }
+          }
           break;
-        }
-        
-        break;
       default:
         break;
     }
     return hashCode
   }
-  put(key:K,value:V):V {  
-      
+  put(key: K, value: V): V {
+    let index = this.index(key)
+    
+    //取出index位置的红黑树根节点
+    let root = this.table[index]    
     //添加第一个节点
-    if (this.root === null) {
-      this.root = new MTNode(key,value,null)
+    if (root === null) {
+      root = new MTNode(key, value, null)
+     this.table[index] =root
       this.size++;
-      this.afterPut(this.root);
+      this.afterPut(root);
       return null;
     }
     //添加的不是第一个
-    let node: MTNode<K,V> = this.root;
-    let parentNode: MTNode<K,V> = this.root;
+    let node: MTNode<K,V> = root;
+    let parentNode: MTNode<K,V> = root;
     let result = 0;
-    while (node !== null) {
+    let h1=key===null?0:this.hashCode(key)
+    do {
       //比较器
-      result = this.compareTo(key, node.key);
+      result = this.compareTo(key, node.key,h1,node.hash);
       parentNode = node;
       //如果e1>e2，则找到右边
       if (result > 0) {
@@ -137,11 +146,11 @@ class MapA<K, V>{
         node = node.Left;
       } else {
         node.key = key;
-      const oldValue=node.value
+        const oldValue = node.value
         node.value = value;
         return oldValue;
       }
-    }
+    } while (node !== null);
     let newNode: MTNode<K,V> = new MTNode(key,value,parentNode)
     if (result > 0) {
       parentNode.right = newNode;
@@ -196,12 +205,27 @@ class MapA<K, V>{
       this.rotateLeft(grand);
     }
   }
-   private compareTo(e1: K, e2: K): number {
-    if (this.compare) {
-      return this.compare(e1, e2);
+  /**
+   * 
+   * @param e1 
+   * @param e2 
+   * @param h1 e1的hashCode
+   * @param h2 e2的hashCode
+   * @returns 
+   */
+  private compareTo(e1: K, e2: K, h1: number, h2: number): number {
+   
+    if (e1 === e2) {
+      return 0
     } else {
-      return (e1 as any).compare(e2);
+       //比较哈希值
+      const result = h1 - h2
+      if (result !== 0) return result
+      //比较原型链
+      const proptyes = this.hashCode(Object.prototype.toString.call(e1)) - this.hashCode(Object.prototype.toString.call(e2));
+      if (proptyes !== 0) return proptyes;
     }
+    return 0
   }
   get(key:K) {
     const node: MTNode<K, V> = this.findNode(key)
@@ -209,7 +233,6 @@ class MapA<K, V>{
   }
    private removeNode(node: MTNode<K, V>): V {
     if (node === null) return null;
-
     this.size--;
     const oldvalue=node.value
     if (node.hasTwoChild()) {
@@ -225,7 +248,8 @@ class MapA<K, V>{
     }
     //删除node节点(node度必然为0||1)
     //要替代父节点的节点
-    let replacement = node.Left != null ? node.Left : node.right;
+     let replacement = node.Left != null ? node.Left : node.right;
+     let index=this.index(node.key)
     if (replacement !== null) {
       //node是度为1的节点
       //1。更改parent
@@ -233,7 +257,7 @@ class MapA<K, V>{
       //2.更改 parent的左或者右节点
       if (node.parent === null) {
         //node是度为1的根节点
-        this.root = replacement;
+        this.table[index] = replacement;
       } else if (node === node.parent.Left) {
         node.parent.Left = replacement;
       } else if (node === node.parent.right) {
@@ -242,7 +266,7 @@ class MapA<K, V>{
       this.afterRemove(replacement);
     } else if (node.parent === null) {
       //node是叶子节点且是根节点
-      this.root = null;
+      this.table[index] = null;
       this.afterRemove(node);
     } else {
       //node是叶子节点但不是根节点
@@ -293,7 +317,7 @@ class MapA<K, V>{
   remove(key:K) {
     this.removeNode(this.findNode(key));
   }
-    protected afterRemove(node: MTNode<K, V>) {
+  protected afterRemove(node: MTNode<K, V>) {
      if (this.isRed(node)) {
       this.black(node);
       return; //用以取代的node的子节点是红色
@@ -372,24 +396,48 @@ class MapA<K, V>{
     return this.findNode(key)!==null
   }
   containsValue(value: V) {
-    if (this.root == null) return false;
-    const arr = []
-    arr.push(this.root);
+    if (this.size === 0) return false;
+        const arr = []
+    for (let i = 0; i < this.table.length; i++) {
+      if (this.table[i] === null) continue;
+      arr.push(this.table[i]);
     while (arr.length) {
       const node:MTNode<K,V> = arr.pop()
       if (node.value === value) return true;
       if (node.Left) {
         arr.push(node.Left)
-      }
+      } 
       if (node.right) {
           arr.push(node.right)
       }
     }
+    }
+    
+  }
+  traversal() {
+    if (this.size === 0) return false;
+        const arr = []
+    for (let i = 0; i < this.table.length; i++) {
+      if (this.table[i] === null) continue;
+      arr.push(this.table[i]);
+    while (arr.length) {
+      const node:MTNode<K,V> = arr.pop()
+      console.log(node.key,node.value);
+      if (node.Left) {
+        arr.push(node.Left)
+      } 
+      if (node.right) {
+          arr.push(node.right)
+      }
+    }
+    }
   }
   private findNode(key: K): MTNode<K, V> {
-    let node: MTNode<K, V> = this.root;
+    //取出index位置的红黑树根节点
+    let node = this.table[this.index(key)]
+    let hash=this.hashCode(key)
     while (node != null) {
-      let cmp = this.compareTo(key, node.key);
+      let cmp = this.compareTo(key, node.key,hash,node.hash);
       if (cmp === 0) return node;
       if (cmp > 0) {
         node = node.right;
@@ -406,6 +454,7 @@ class MapA<K, V>{
  class MTNode<K, V> {
    key: K;
    value: V;
+   hash:number
    color: boolean;
    Left: MTNode<K, V>;
   right: MTNode<K, V>;
@@ -416,7 +465,8 @@ class MapA<K, V>{
     this.right = null;
     this.color = MapA.RED;
     this.key = key;
-    this.value=value
+    this.value = value
+    this.hash=key===null?0:this.hashCode(key)
   }
   isLeaf(): boolean {
     return this.Left === null && this.right === null;
@@ -429,6 +479,39 @@ class MapA<K, V>{
   }
   isRightChild(): boolean {
     return this.parent !== null && this === this.parent.right;
+   }
+
+  private hashCode(key: K):number {
+    let hashCode = 0;
+    switch (typeof key ) {
+      case 'number':
+        if (key % 1 === 0) {
+          hashCode = key
+          break;
+        }
+        const str=key.toString()
+         for (let i = 0; i < str.length; i++) {
+          hashCode=(hashCode<<5)-hashCode+str.charCodeAt(i)
+        }
+        break;
+      case 'string':
+        for (let i = 0; i < key.length; i++) {
+          // hashCode=31*hashCode+key.charCodeAt(i)
+          hashCode=(hashCode<<5)-hashCode+key.charCodeAt(i)
+        }
+        break;
+      case 'object':
+          if (key === null) return 0;
+          for (const keys in key) {
+            if (key.hasOwnProperty(keys)) {
+              hashCode = (hashCode << 5) - hashCode + this.hashCode(key[keys] as unknown as K)
+            }
+          }
+          break;
+      default:
+        break;
+    }
+    return hashCode
   }
   sibling():MTNode<K, V> {
     if (this.isLeftChild()) {
