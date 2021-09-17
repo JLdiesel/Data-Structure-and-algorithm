@@ -34,23 +34,24 @@ console.log(map.get(123));
 
 map.traversal()
 console.log(map); */
-import BinaryHeap from './数据结构TS/12-BinaryHeap';
-const BH = new BinaryHeap<number>((e1, e2) => e1 - e2)
-BH.add(3)
-BH.add(14)
-BH.add(40)
-BH.add(72)
-BH.add(50)
-BH.add(43)
-BH.add(38)
-BH.add(47)
-BH.add(21)
-BH.add(68)
-BH.remove()
+// import BinaryHeap from './数据结构TS/12-BinaryHeap';
+// const BH = new BinaryHeap<number>((e1, e2) => e1 - e2)
+// BH.add(3)
+// BH.add(14)
+// BH.add(40)
+// BH.add(72)
+// BH.add(50)
+// BH.add(43)
+// BH.add(38)
+// BH.add(47)
+// BH.add(21)
+// BH.add(68)
+// BH.remove()
 // BH.add(50)
 
 
-console.log(BH);
+// console.log(BH);
+import   './算法TS/Top_K问题(堆实现)'
 
 
 

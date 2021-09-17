@@ -7,7 +7,7 @@ class BinaryHeap<E>{
     this.comparator = comparator;
     this.elements = []
     this.size = 0;
-    if (elements?.length !== 0) {
+    if (elements&&elements?.length !== 0) {
       this.size=elements.length
       this.elements = [...elements]
       this.heapify()
