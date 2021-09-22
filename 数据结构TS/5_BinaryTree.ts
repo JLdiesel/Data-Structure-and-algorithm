@@ -20,6 +20,78 @@ class BrinaryTree<E>{
         this.root = null;
         this.size = 0
     }
+    preorder2(fn: (element: E) => void) {
+        if(!fn||this.root===null) return
+       const arr:Node<E>[] = [];
+        arr.push(this.root);
+        while (arr.length) {
+            const node = arr.pop();
+            fn(node.element);
+             if (node.right) {
+                arr.push(node.right)
+            }
+            if (node.Left) {
+                arr.push(node.Left)
+            }
+        }
+    }
+    //前序遍历(非递归)
+   preorder(fn:(element:E)=>void) {
+     if(!fn||this.root===null) return
+       const arr = [];
+       let node=this.root
+       while (true) {
+           if (node !== null) {
+               fn(node.element);
+               if (node.right !== null) {
+                   arr.push(node.right)
+               }
+               node=node.Left
+           } else if (arr.length === 0) {
+               return 
+           } else {
+               node=arr.pop()
+           }
+       }
+    }
+    //中序遍历
+    inorder(fn:(element:E)=>void) {
+        if(!fn||this.root===null) return
+        const arr = [];
+        let node=this.root
+       while (true) {
+           if (node !== null) {
+                arr.push(node.right)
+                node=node.Left
+           } else if (arr.length === 0) {
+               return 
+           } else {
+               node = arr.pop()
+               fn(node.element);
+               node=node.right
+           }
+       }
+    }
+    postorder(fn:(element:E)=>void) {
+       if(!fn||this.root===null) return
+        const arr: Node<E>[] = [];
+        let preNode:Node<E>
+        arr.push(this.root);
+        while (arr.length) {
+            let top = arr[arr.length - 1];
+            if (top.isLeaf()|| (preNode&& preNode.parent===top)) {
+                preNode = arr.pop();
+                fn(preNode.element);
+            } else {
+                if (top.right !== null) {
+                    arr.push(top.right)
+                }
+                 if (top.Left !== null) {
+                    arr.push(top.Left)
+                }
+            }
+        }
+    }
     //前序遍历
     preorderTravsersal1(fn: (element) => void): void {
         this.preorderTravsersal(this.root, fn);
@@ -48,7 +120,6 @@ class BrinaryTree<E>{
     }
     private postorderTravsersal(node: Node<E>, fn: (element: E) => void): void {
         if (node === null) return
-
         this.postorderTravsersal(node.Left, fn)
         this.postorderTravsersal(node.right, fn)
         fn(node.element);

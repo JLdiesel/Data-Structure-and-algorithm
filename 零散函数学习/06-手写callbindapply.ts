@@ -1,10 +1,11 @@
 a.JLCall=function(thisArg: any, ...argArray: any[]) {
   thisArg === 0 ? 0 : thisArg ? thisArg : {};
   const fn = this;
-  thisArg.fn = fn;
- const result= thisArg.fn(...argArray)
+  const a=Symbol()
+  thisArg[a] = fn;
+  const result= thisArg.a(...argArray)
 
-  thisArg.fn=null
+  thisArg.a=null
   return result
 }
 
@@ -18,20 +19,22 @@ a.JLCall({name:123},666,555)
 a.JLApply=function(thisArg: any, argArray: any[]) {
   thisArg === 0 ? 0 : thisArg ? thisArg : {};
   const fn = this;
-  thisArg.fn = fn;
- const result= thisArg.fn(...argArray)
-   thisArg.fn=null;
+    const a=Symbol()
+  thisArg[a] = fn;
+ const result= thisArg.a(...argArray)
+   thisArg.a=null;
   return result
 }
 
 a.JLApply({ name: 123 }, [666, 555])
 a.JLbind = function (thisArg: any, ...argArray: any[]) {
     thisArg === 0 ? 0 : thisArg ? thisArg : {};
-    const fns = this;
-    thisArg.fns = fns;
+  const fns = this;
+   const a=Symbol()
+  thisArg[a] = fns;
   function fn(...arr){
-    const result= thisArg.fns(...argArray,...arr)
-    thisArg.fn = null;
+    const result= thisArg.a(...argArray,...arr)
+    thisArg.a = null;
     return result
  }
   return fn

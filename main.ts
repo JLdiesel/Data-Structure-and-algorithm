@@ -51,7 +51,24 @@ console.log(map); */
 
 
 // console.log(BH);
-import   './算法TS/Top_K问题(堆实现)'
+// import   './算法TS/Top_K问题(堆实现)'
+import Tire from './数据结构TS/13_Trie'
+
+const tire = new Tire();
+tire.add('my',1)
+tire.add('cat',2)
+tire.add('dog',3)
+tire.add('catalog',4)
+tire.add('cast',5)
+tire.add('金龙', 6)
+console.log(tire);
+console.log(tire.size===6);
+console.log(tire.startsWith('do'));
+console.log(tire.startsWith('c'));
+console.log(tire.startsWith('cat'));
+console.log(tire.startsWith('cata'));
+console.log(tire.startsWith('hehe'));
+console.log(tire.get('金龙')); 
 
 
 
