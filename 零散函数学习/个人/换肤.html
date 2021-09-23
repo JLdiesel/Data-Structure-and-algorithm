@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>less换肤</title>
+  <link rel="stylesheet/less" type="text/css" href="./index.less" />
+  <script src="https://cdn.bootcdn.net/ajax/libs/less.js/4.1.1/less.min.js"></script>
+  <script>
+    let whiteVars = {
+      '@body-bgColor': '#fff',
+      '@text-color': '#000',
+      '@btn-color': '#fff',
+      '@primary-color': '#1890ff'
+    }
+    let blackVars = {
+      '@body-bgColor': '#000',
+      '@text-color': '#fff',
+      '@btn-color': '#fff',
+      '@primary-color': '#1890ff'
+    };
+    // 根据传入的变量，编译生成新的css，把这些css用style标签包裹起来，插入到对应的less文件下，见下方：图一
+    window.less.modifyVars(whiteVars);
+  </script>
+</head>
+
+<body>
+  <h1>less换肤方案</h1>
+  <button class="btn" onclick="window.less.modifyVars(whiteVars);">白色皮肤</button>
+  <button class="btn" onclick="window.less.modifyVars(blackVars);">黑色皮肤</button>
+</body>
+
+</html>
