@@ -1,3 +1,27 @@
+import {Bubble} from './算法TS/排序算法/冒泡'
+import {Selection} from './算法TS/排序算法/选择'
+import {Heap} from './算法TS/排序算法/堆'
+import {Insert} from './算法TS/排序算法/插入'
+const bubble=new Bubble([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
+bubble.sort()
+const bubble2=new Bubble([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
+bubble2.sort2()
+const selection=new Selection([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
+
+selection.sort()
+const heap=new Heap([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
+heap.sort()
+const insert=new Insert([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
+insert.sort()
+const insert2=new Insert([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
+insert2.sort2()
+
+
+
+
+
+
+
 /* import RBTree from './数据结构TS/10_Map'
 const RBT = new RBTree((e1: number, e2: number) => {
   return e1 - e2;
@@ -52,7 +76,7 @@ console.log(map); */
 
 // console.log(BH);
 // import   './算法TS/Top_K问题(堆实现)'
-import Tire from './数据结构TS/13_Trie'
+/* import Tire from './数据结构TS/13_Trie'
 
 const tire = new Tire();
 tire.add('my',1)
@@ -69,9 +93,7 @@ console.log(tire.startsWith('cat'));
 console.log(tire.startsWith('cata'));
 console.log(tire.startsWith('hehe'));
 console.log(tire.get('金龙')); 
-
-
-
+ */
 
 
 

@@ -1,36 +1,36 @@
-function sort(arr:number[]) {
-  for (let end = arr.length - 1; end > 0; end--) {
-    let sorted=true
-    for (let begin = 1; begin <= end; begin++){
-      if (arr[begin] < arr[begin - 1]) {
-        const tmp = arr[begin];
-        arr[begin] = arr[begin - 1];
-        arr[begin - 1] = tmp
-        sorted=false
+import Sort from './父类'
+
+export class Bubble extends Sort{
+
+   sort() {
+    console.log(this.arr);
+    for (let end = this.arr.length - 1; end > 0; end--) {
+      let sorted=true
+      for (let begin = 1; begin <= end; begin++){
+        if (this.cmp(begin,begin-1)<0 ) {
+          this.swap(begin,begin-1)
+          sorted=false
+        }
+      }
+      if (sorted) {
+          break;
       }
     }
-    if (sorted) {
-        break;
-    }
+    console.log(this.arr);
+    
   }
-  console.log(arr);
-  
-}
-function sort2(arr:number[]) {
-  for (let end = arr.length - 1; end > 0; end--) {
-    let sortedIndex=0
-    for (let begin = 1; begin <= end; begin++){
-      if (arr[begin] < arr[begin - 1]) {
-        const tmp = arr[begin];
-        arr[begin] = arr[begin - 1];
-        arr[begin - 1] = tmp
-        sortedIndex=begin
+   sort2() {
+    console.log(this.arr);
+    for (let end = this.arr.length - 1; end > 0; end--) {
+      let sortedIndex=0
+      for (let begin = 1; begin <= end; begin++){
+        if (this.cmp(begin,begin-1)<0 ) {
+          this.swap(begin,begin-1)
+          sortedIndex=begin
+        }
       }
+      end=sortedIndex
     }
-    end=sortedIndex
+    console.log(this.arr);
   }
-  console.log(arr);
-  
 }
-const arr = [1, 5, 7, 33, 66, 23, 77, 99, 32]
-sort(arr)
