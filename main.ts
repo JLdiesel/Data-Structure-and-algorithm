@@ -3,6 +3,7 @@ import {Selection} from './算法TS/排序算法/选择'
 import {Heap} from './算法TS/排序算法/堆'
 import {Insert} from './算法TS/排序算法/插入'
 import {MergeSort} from './算法TS/排序算法/归并'
+import {QuickSort} from './算法TS/排序算法/快排'
 const bubble=new Bubble([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
 bubble.sort()
 const bubble2=new Bubble([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
@@ -20,6 +21,8 @@ const insert3=new Insert([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
 insert3.sort3()
 const mergeSort=new MergeSort([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
 mergeSort.sort()
+const quickSort=new QuickSort([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
+quickSort.sort()
 
 
 
