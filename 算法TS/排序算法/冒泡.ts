@@ -1,35 +1,33 @@
-import Sort from './父类'
+import Sort from './父类';
 
-export class Bubble extends Sort{
-
-   sort() {
+export class Bubble extends Sort {
+  sort() {
     console.log(this.arr);
     for (let end = this.arr.length - 1; end > 0; end--) {
-      let sorted=true
-      for (let begin = 1; begin <= end; begin++){
-        if (this.cmp(begin,begin-1)<0 ) {
-          this.swap(begin,begin-1)
-          sorted=false
+      let sorted = true;
+      for (let begin = 1; begin <= end; begin++) {
+        if (this.cmp(begin, begin - 1) < 0) {
+          this.swap(begin, begin - 1);
+          sorted = false;
         }
       }
       if (sorted) {
-          break;
+        break;
       }
     }
     console.log(this.arr);
-    
   }
-   sort2() {
+  sort2() {
     console.log(this.arr);
     for (let end = this.arr.length - 1; end > 0; end--) {
-      let sortedIndex=0
-      for (let begin = 1; begin <= end; begin++){
-        if (this.cmp(begin,begin-1)<0 ) {
-          this.swap(begin,begin-1)
-          sortedIndex=begin
+      let sortedIndex = 0;
+      for (let begin = 1; begin <= end; begin++) {
+        if (this.cmp(begin, begin - 1) < 0) {
+          this.swap(begin, begin - 1);
+          sortedIndex = begin;
         }
       }
-      end=sortedIndex
+      end = sortedIndex;
     }
     console.log(this.arr);
   }

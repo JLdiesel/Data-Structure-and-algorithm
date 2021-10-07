@@ -11,7 +11,7 @@
 //             return false
 //         }
 //     for (let i in arr) {
-        
+
 //         //如果出现左边符号,则把它加入到stark数组中
 //         if (keys.includes(arr.charAt(i))) {
 //             stark.push(arr.charAt(i))
@@ -30,16 +30,13 @@
 //     }
 //     return true
 // }
-function yanzheng(str:string) {
-  while (str.includes('()') || str.includes('[]') || str.includes('{}'))
-  {
-  str=  str.replace('()','')
-  str=   str.replace('[]','')
-  str=   str.replace('{}','')
+function yanzheng(str: string) {
+  while (str.includes('()') || str.includes('[]') || str.includes('{}')) {
+    str = str.replace('()', '');
+    str = str.replace('[]', '');
+    str = str.replace('{}', '');
   }
-  return str.length===0
+  return str.length === 0;
 }
 
-
-
-export default yanzheng
+export default yanzheng;
