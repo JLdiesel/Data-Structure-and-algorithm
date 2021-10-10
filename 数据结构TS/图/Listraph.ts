@@ -32,6 +32,8 @@ export class Listraph<V, E> implements Graph<V, E> {
       if (key.equals(edge)) {
         key.weight = edge.weight;
         hasSame = true;
+        toVertex.inEdges.delete(key);
+        toVertex.inEdges.add(key);
         break;
       }
     }
@@ -49,7 +51,30 @@ export class Listraph<V, E> implements Graph<V, E> {
     }
   }
   removeVertex(v: V): void {
-    throw new Error('Method not implemented.');
+    let vertex = this.vertices.get(v);
+    if (vertex === null) return;
+    this.vertices.delete(v);
+    for (const key of vertex.inEdges) {
+      for (const okey of key.to.outEdges) {
+        if (okey.equals(key)) {
+          key.to.outEdges.delete(okey);
+        }
+      }
+    }
+    for (const key of vertex.outEdges) {
+      for (const okey of key.to.inEdges) {
+        if (okey.equals(key)) {
+          key.to.inEdges.delete(okey);
+        }
+      }
+    }
+    for (const edge of this.edges) {
+      if (edge.from === vertex || edge.to === vertex) {
+        this.edges.delete(edge);
+      }
+    }
+    console.log(this.edges);
+    console.log(this.vertices);
   }
   removeEdge(from: V, to: V) {
     let fromVertex = this.vertices.get(from);
@@ -58,25 +83,13 @@ export class Listraph<V, E> implements Graph<V, E> {
     if (toVertex === null) return;
 
     const edge = new Edge(fromVertex, toVertex);
-    let hasSame = false;
     for (const key of fromVertex.outEdges) {
       if (key.equals(edge)) {
-        key.weight = edge.weight;
-        hasSame = true;
+        fromVertex.outEdges.delete(key);
+        toVertex.inEdges.delete(key);
+        this.edges.delete(key);
         break;
       }
-    }
-    for (const key of toVertex.inEdges) {
-      if (key.equals(edge)) {
-        key.weight = edge.weight;
-        hasSame = true;
-        break;
-      }
-    }
-    if (!hasSame) {
-      fromVertex.outEdges.add(edge);
-      toVertex.inEdges.add(edge);
-      this.edges.add(edge);
     }
   }
 }
