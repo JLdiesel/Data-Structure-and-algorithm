@@ -111,4 +111,20 @@ export class Listraph<V, E> implements Graph<V, E> {
       }
     }
   }
+  //深度有限
+  dfs(begin: V) {
+    const beginVertex = this.vertices.get(begin);
+    if (!beginVertex) return;
+    const set = new Set<Vertex<V, E>>();
+    set.add(beginVertex);
+    this.dfsMain(beginVertex, set);
+  }
+  dfsMain(vertex: Vertex<V, E>, set: Set<Vertex<V, E>>) {
+    console.log(vertex.value);
+    set.add(vertex);
+    for (const edge of vertex.outEdges) {
+      if (set.has(edge.to)) continue;
+      this.dfsMain(edge.to, set);
+    }
+  }
 }
