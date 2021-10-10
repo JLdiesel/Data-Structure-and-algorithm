@@ -92,4 +92,23 @@ export class Listraph<V, E> implements Graph<V, E> {
       }
     }
   }
+  //广度优先
+  bfs(begin: V) {
+    const beginVertex = this.vertices.get(begin);
+    if (!beginVertex) return;
+    const arr: Vertex<V, E>[] = [];
+    const set = new Set<Vertex<V, E>>();
+    arr.push(beginVertex);
+    set.add(beginVertex);
+    while (arr.length) {
+      let vertex = arr.shift();
+      console.log(vertex.value);
+      set.add(vertex);
+      for (const edge of vertex.outEdges) {
+        if (set.has(edge.to)) continue;
+        arr.push(edge.to);
+        set.add(edge.to);
+      }
+    }
+  }
 }
