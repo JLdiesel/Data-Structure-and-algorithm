@@ -111,7 +111,7 @@ export class Listraph<V, E> implements Graph<V, E> {
       }
     }
   }
-  //深度有限
+  //深度优先(递归)
   dfs(begin: V) {
     const beginVertex = this.vertices.get(begin);
     if (!beginVertex) return;
@@ -125,6 +125,58 @@ export class Listraph<V, E> implements Graph<V, E> {
     for (const edge of vertex.outEdges) {
       if (set.has(edge.to)) continue;
       this.dfsMain(edge.to, set);
+    }
+  }
+  //深度优先(非递归)
+  dfs2(begin: V) {
+    const beginVertex = this.vertices.get(begin);
+    if (!beginVertex) return;
+    const set = new Set<Vertex<V, E>>();
+    const stack: Vertex<V, E>[] = [];
+    stack.push(beginVertex);
+    set.add(beginVertex);
+    console.log(beginVertex.value);
+    while (stack.length) {
+      let vertex = stack.pop();
+      for (const edge of vertex.outEdges) {
+        if (set.has(edge.to)) continue;
+        // stack.push(vertex);
+        stack.push(edge.from);
+        stack.push(edge.to);
+        set.add(edge.to);
+        console.log(edge.to.value);
+        break;
+      }
+    }
+  }
+  //拓扑排序
+  topologicalSort() {
+    const list: V[] = [];
+    const queue: Vertex<V, E>[] = [];
+    const map: Map<Vertex<V, E>, number> = new Map();
+    this.vertices.forEach((item) => {
+      const insize = item.inEdges.size;
+      if (insize === 0) {
+        queue.push(item);
+      } else {
+        map.set(item, insize);
+      }
+    });
+    //初始化，将度为0的节点都放入队列
+    while (!queue.length) {
+      let vertex = queue.shift();
+      //放入度为0的节点
+      list.push(vertex.value);
+      //将入度为0的节点的后驱活动的度-1
+      //如果-1后活动的度为0，则加入到遍历队列
+      for (const edge of vertex.outEdges) {
+        let toIn = map.get(edge.to) - 1;
+        if (toIn === 0) {
+          queue.push(edge.to);
+        } else {
+          map.set(edge.to, toIn);
+        }
+      }
     }
   }
 }

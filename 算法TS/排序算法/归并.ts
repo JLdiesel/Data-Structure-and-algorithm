@@ -32,10 +32,13 @@ export class MergeSort extends Sort {
     let re = end; //右边数组的初始和最后下标
     let ai = begin; //数组下标
     //备份左边数组
-    for (let i: number = li; i < le; i++) {
+    for (let i = li; i < le; i++) {
       this.leftArr[i] = this.arr[begin + i];
     }
+    //当左边数组初始下标大于左边数组最后下标
     while (li < le) {
+      //如果右边的初始下标小于最后下标
+      //且右边数组值比左边数组值小，当前数组下标的值和右边数组下标值互换
       if (ri < re && this.cmpElement(this.arr[ri], this.leftArr[li]) < 0) {
         this.arr[ai++] = this.arr[ri++];
       } else {

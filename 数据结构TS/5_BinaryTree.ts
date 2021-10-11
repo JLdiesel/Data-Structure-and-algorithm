@@ -71,6 +71,7 @@ class BrinaryTree<E> {
       }
     }
   }
+  //后序遍历
   postorder(fn: (element: E) => void) {
     if (!fn || this.root === null) return;
     const arr: Node<E>[] = [];
