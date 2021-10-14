@@ -1,32 +1,35 @@
-export interface Graph<V, E> {
+export interface Graph<V> {
   edgesSize(): number;
   verticesSize(): number;
   addVertex(v: V): void;
-  addEdge(from: V, to: V, weight?: E): void;
+  addEdge(from: V, to: V, weight?: number): void;
   removeVertex(v: V): void;
   removeEdge(from: V, to: V);
 }
-export class Vertex<V, E> {
+export class Vertex<V> {
   value: V;
-  inEdges: Set<Edge<V, E>>;
-  outEdges: Set<Edge<V, E>>;
+  inEdges: Set<Edge<V>>;
+  outEdges: Set<Edge<V>>;
   constructor(value: V) {
     this.value = value;
   }
-  equals(obj: Vertex<V, E>) {
+  equals(obj: Vertex<V>) {
     return obj.value === this.value;
   }
 }
-export class Edge<V, E> {
-  from: Vertex<V, E>;
-  to: Vertex<V, E>;
-  weight?: E;
-  constructor(from: Vertex<V, E>, to: Vertex<V, E>, weight?: E) {
+export class Edge<V> {
+  from: Vertex<V>;
+  to: Vertex<V>;
+  weight?: number;
+  constructor(from: Vertex<V>, to: Vertex<V>, weight?: number) {
     this.from = from;
     this.to = to;
     this.weight = weight;
   }
-  equals(obj: Edge<V, E>) {
+  equals(obj: Edge<V>) {
     return obj.from === this.from && obj.to === this.to;
+  }
+  compareTo(obj: Edge<V>) {
+    return this.weight - obj.weight;
   }
 }
