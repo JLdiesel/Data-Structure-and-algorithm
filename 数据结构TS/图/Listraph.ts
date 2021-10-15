@@ -1,4 +1,4 @@
-import { Edge, Graph, Vertex } from './Graph';
+import { Edge, Graph, PathInfo, Vertex } from './Graph';
 import BH from '../12-BinaryHeap';
 import { UnionFind } from './UnionFind';
 export class Listraph<V> implements Graph<V> {
@@ -96,7 +96,7 @@ export class Listraph<V> implements Graph<V> {
   //广度优先
   bfs(begin: V) {
     const beginVertex = this.vertices.get(begin);
-    if (!beginVertex) return;
+    if (!beginVertex) return null;
     const arr: Vertex<V>[] = [];
     const set = new Set<Vertex<V>>();
     arr.push(beginVertex);
@@ -115,7 +115,7 @@ export class Listraph<V> implements Graph<V> {
   //深度优先(递归)
   dfs(begin: V) {
     const beginVertex = this.vertices.get(begin);
-    if (!beginVertex) return;
+    if (!beginVertex) return null;
     const set = new Set<Vertex<V>>();
     set.add(beginVertex);
     this.dfsMain(beginVertex, set);
@@ -131,7 +131,7 @@ export class Listraph<V> implements Graph<V> {
   //深度优先(非递归)
   dfs2(begin: V) {
     const beginVertex = this.vertices.get(begin);
-    if (!beginVertex) return;
+    if (!beginVertex) return null;
     //保存遍历过的节点
     const set = new Set<Vertex<V>>();
     //保存所有节点
@@ -234,6 +234,7 @@ export class Listraph<V> implements Graph<V> {
     const heap = new BH<Edge<V>>((a, b) => b.compareTo(a), [...this.edges]);
     //经过的线的集合
     const edgeSet: Set<Edge<V>> = new Set();
+    //用并查集实现
     const uf = new UnionFind<Vertex<V>>();
     this.vertices.forEach((v, k) => {
       uf.makeSet(v);
@@ -248,5 +249,120 @@ export class Listraph<V> implements Graph<V> {
       uf.union(edge.from, edge.to);
     }
     return edgeSet;
+  }
+  //最短路径查询算法 Dijkstra
+  shortestPath(begin: V): Map<V, number> {
+    const beginVertex = this.vertices.get(begin);
+    if (!beginVertex) return null;
+    //还没找到最短路径的集合
+    const paths: Map<Vertex<V>, number> = new Map();
+    //已经找到最短路径的集合
+    const selectedPaths: Map<V, number> = new Map();
+    //初始化paths  把初始节点的所有向外的边都加入到paths
+    for (const edge of beginVertex.outEdges) {
+      paths.set(edge.to, edge.weight);
+    }
+    while (paths.size) {
+      const minEntry = this.getMinPath(paths);
+      //minEntry离开桌面
+      const minVertex = minEntry.vertex;
+      selectedPaths.set(minVertex.value, minEntry.weight);
+      paths.delete(minVertex);
+      //对minVertex的outEndges进行松弛操作
+      for (const edge of minVertex.outEdges) {
+        //如果edge.to离开地面 则不需要比较
+        if (selectedPaths.get(edge.to.value) || edge.to.value === begin)
+          continue;
+        //以前的最短路径：beginVertex到edge.to的最短路径
+        const oldVertexNum = paths.get(edge.to) || null;
+        //新的可选择的最短路径：begeinVertex到edge.from的最短路径+edge.weight
+        const newVertexNum = minEntry.weight + edge.weight;
+        if (oldVertexNum === null || oldVertexNum > newVertexNum) {
+          paths.set(edge.to, newVertexNum);
+        }
+      }
+    }
+    // selectedPaths.delete(begin)
+
+    return selectedPaths;
+  }
+  //从paths中挑一条最小的路径出来
+  getMinPath(paths: Map<Vertex<V>, number>): {
+    vertex: Vertex<V>;
+    weight: number;
+  } {
+    let minVertex: Vertex<V> = null;
+    let minWeight: number = null;
+    for (const item of paths.entries()) {
+      if (item[1] < minWeight || minWeight === null) {
+        minWeight = item[1];
+        minVertex = item[0];
+      }
+    }
+    return {
+      vertex: minVertex,
+      weight: minWeight,
+    };
+  }
+  shortestPath2(begin: V): Map<V, PathInfo<V>> {
+    const beginVertex = this.vertices.get(begin);
+    if (!beginVertex) return null;
+    //还没找到最短路径的集合
+    const paths: Map<Vertex<V>, PathInfo<V>> = new Map();
+    //已经找到最短路径的集合
+    const selectedPaths: Map<V, PathInfo<V>> = new Map();
+    //初始化paths  把初始节点的所有向外的边都加入到paths
+    for (const edge of beginVertex.outEdges) {
+      const pathInfo = new PathInfo<V>(edge.weight);
+      pathInfo.list.push(edge);
+      paths.set(edge.to, pathInfo);
+    }
+    while (paths.size) {
+      const minEntry = this.getMinPath2(paths);
+      //minEntry离开桌面
+      const minVertex = minEntry.vertex;
+      selectedPaths.set(minVertex.value, minEntry.pathInfo);
+      paths.delete(minVertex);
+      //对minVertex的outEndges进行松弛操作
+      for (const edge of minVertex.outEdges) {
+        //如果edge.to离开地面 则不需要比较
+        if (selectedPaths.get(edge.to.value) || edge.to.value === begin)
+          continue;
+        //以前的最短路径：beginVertex到edge.to的最短路径
+        const oldVertexNum = paths.get(edge.to)?.weight || null;
+        //新的可选择的最短路径：begeinVertex到edge.from的最短路径+edge.weight
+        const newVertexNum = minEntry.pathInfo.weight + edge.weight;
+        if (oldVertexNum === null || oldVertexNum > newVertexNum) {
+          // const begin = paths.get(edge.to);
+          const newPathInfo = new PathInfo<V>(newVertexNum);
+          // newPathInfo.list.push(edge);
+          //先将之前的路径加进去
+          const prePath = selectedPaths.get(minVertex.value);
+          //再加现在的
+          newPathInfo.list = [...prePath.list].concat(edge);
+          paths.set(edge.to, newPathInfo);
+        }
+      }
+    }
+    // selectedPaths.delete(begin)
+
+    return selectedPaths;
+  }
+  getMinPath2(paths: Map<Vertex<V>, PathInfo<V>>): {
+    vertex: Vertex<V>;
+    pathInfo: PathInfo<V>;
+  } {
+    let minVertex: Vertex<V> = null;
+    let minWeight: PathInfo<V> = null;
+    for (const item of paths.entries()) {
+      if (item[1].weight < minWeight.weight || minWeight === null) {
+        minWeight.weight = item[1].weight;
+        minVertex = item[0];
+      }
+    }
+    return {
+      vertex: minVertex,
+      pathInfo: minWeight,
+    };
   }
 }

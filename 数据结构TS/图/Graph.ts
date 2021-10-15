@@ -33,3 +33,12 @@ export class Edge<V> {
     return this.weight - obj.weight;
   }
 }
+
+export class PathInfo<V> {
+  weight: number;
+  list: Edge<V>[];
+  constructor(weight: number) {
+    this.weight = weight;
+    this.list = [];
+  }
+}
