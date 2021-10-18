@@ -93,6 +93,7 @@ export class Listraph<V> implements Graph<V> {
       }
     }
   }
+
   //广度优先
   bfs(begin: V) {
     const beginVertex = this.vertices.get(begin);
@@ -112,6 +113,7 @@ export class Listraph<V> implements Graph<V> {
       }
     }
   }
+
   //深度优先(递归)
   dfs(begin: V) {
     const beginVertex = this.vertices.get(begin);
@@ -128,6 +130,7 @@ export class Listraph<V> implements Graph<V> {
       this.dfsMain(edge.to, set);
     }
   }
+
   //深度优先(非递归)
   dfs2(begin: V) {
     const beginVertex = this.vertices.get(begin);
@@ -153,6 +156,7 @@ export class Listraph<V> implements Graph<V> {
       }
     }
   }
+
   //拓扑排序
   topologicalSort() {
     const list: V[] = [];
@@ -189,6 +193,7 @@ export class Listraph<V> implements Graph<V> {
   mst2(): Set<Edge<V>> {
     return this.kruskal();
   }
+
   //prim算法，返回最优路径(权重最小)  切分算法
   private prim(): Set<Edge<V>> {
     const it = this.vertices.values();
@@ -250,7 +255,8 @@ export class Listraph<V> implements Graph<V> {
     }
     return edgeSet;
   }
-  //最短路径查询算法 Dijkstra
+
+  //最短路径查询算法 Dijkstra 单源最短路径算法  不能有负权边
   shortestPath(begin: V): Map<V, number> {
     const beginVertex = this.vertices.get(begin);
     if (!beginVertex) return null;
@@ -304,6 +310,7 @@ export class Listraph<V> implements Graph<V> {
       weight: minWeight,
     };
   }
+  //最短路径查询算法 Dijkstra 能打印出路径点
   shortestPath2(begin: V): Map<V, PathInfo<V>> {
     const beginVertex = this.vertices.get(begin);
     if (!beginVertex) return null;
@@ -323,30 +330,49 @@ export class Listraph<V> implements Graph<V> {
       const minVertex = minEntry.vertex;
       selectedPaths.set(minVertex.value, minEntry.pathInfo);
       paths.delete(minVertex);
+      const fromPath = minEntry.pathInfo;
       //对minVertex的outEndges进行松弛操作
       for (const edge of minVertex.outEdges) {
         //如果edge.to离开地面 则不需要比较
         if (selectedPaths.get(edge.to.value) || edge.to.value === begin)
           continue;
-        //以前的最短路径：beginVertex到edge.to的最短路径
-        const oldVertexNum = paths.get(edge.to)?.weight || null;
-        //新的可选择的最短路径：begeinVertex到edge.from的最短路径+edge.weight
-        const newVertexNum = minEntry.pathInfo.weight + edge.weight;
-        if (oldVertexNum === null || oldVertexNum > newVertexNum) {
-          // const begin = paths.get(edge.to);
-          const newPathInfo = new PathInfo<V>(newVertexNum);
-          // newPathInfo.list.push(edge);
-          //先将之前的路径加进去
-          const prePath = selectedPaths.get(minVertex.value);
-          //再加现在的
-          newPathInfo.list = [...prePath.list].concat(edge);
-          paths.set(edge.to, newPathInfo);
-        }
+        //松弛操作
+        this.relax(edge, fromPath, paths);
       }
     }
     // selectedPaths.delete(begin)
 
     return selectedPaths;
+  }
+  /**
+   *
+   * @param edge 需要松弛的边
+   * @param fromPath edge的from的最短路径信息
+   * @param paths 没有离开桌面的点的集合
+   * @returns
+   */
+  relax(
+    edge: Edge<V>,
+    fromPath: PathInfo<V>,
+    paths: Map<Vertex<V>, PathInfo<V>>
+  ) {
+    //以前的最短路径：beginVertex到edge.to的最短路径
+    let oldPath = paths.get(edge.to) || null;
+    const oldVertexNum = oldPath?.weight || null;
+    //新的可选择的最短路径：begeinVertex到edge.from的最短路径+edge.weight
+    const newVertexNum = fromPath.weight + edge.weight;
+    if (oldVertexNum !== null && oldVertexNum <= newVertexNum) return;
+    if (oldVertexNum === null) {
+      oldPath = new PathInfo<V>(newVertexNum);
+      paths.set(edge.to, oldPath);
+    }
+    // const begin = paths.get(edge.to);
+    oldPath.weight = newVertexNum;
+    // newPathInfo.list.push(edge);
+    //先将之前的路径加进去
+    const prePath = fromPath;
+    //再加现在的
+    oldPath.list = [...prePath.list].concat(edge);
   }
   getMinPath2(paths: Map<Vertex<V>, PathInfo<V>>): {
     vertex: Vertex<V>;

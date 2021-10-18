@@ -1,4 +1,4 @@
-//并查集  快速查找版
+//并查集  快速查找泛型版
 export class UnionFind<V> {
   private nodes: Map<V, Node<V>>;
   constructor() {
