@@ -28,7 +28,7 @@ var invertTree = function (root) {
   let cpm = root.left;
   root.left = root.right;
   root.right = cpm;
-  invertTree(root.left);
+  invertTree(root.right);
   return root;
 };
 // 层序遍历

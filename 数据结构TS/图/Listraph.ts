@@ -318,12 +318,15 @@ export class Listraph<V> implements Graph<V> {
     const paths: Map<Vertex<V>, PathInfo<V>> = new Map();
     //已经找到最短路径的集合
     const selectedPaths: Map<V, PathInfo<V>> = new Map();
+    //把初始化的逻辑放到relax里
+    paths.set(beginVertex, new PathInfo(0));
+
     //初始化paths  把初始节点的所有向外的边都加入到paths
-    for (const edge of beginVertex.outEdges) {
+    /* for (const edge of beginVertex.outEdges) {
       const pathInfo = new PathInfo<V>(edge.weight);
       pathInfo.list.push(edge);
       paths.set(edge.to, pathInfo);
-    }
+    } */
     while (paths.size) {
       const minEntry = this.getMinPath2(paths);
       //minEntry离开桌面
@@ -390,5 +393,116 @@ export class Listraph<V> implements Graph<V> {
       vertex: minVertex,
       pathInfo: minWeight,
     };
+  }
+  //对所有边都进行v:顶点个数-1次松弛操作
+  bellmanFord(begin: V): Map<V, PathInfo<V>> {
+    const beginVertex = this.vertices.get(begin);
+    if (!beginVertex) return null;
+    //已经找到最短路径的集合
+    const selectedPaths: Map<V, PathInfo<V>> = new Map();
+    selectedPaths.set(begin, new PathInfo(0));
+    //顶点个数-1
+    const count = this.vertices.size - 1;
+    for (let i = 0; i < count; i++) {
+      for (const edge of this.edges) {
+        const fromPath = selectedPaths.get(edge.from.value);
+        if (fromPath === null) continue;
+        this.relaxforBellmanFord(edge, fromPath, selectedPaths);
+      }
+    }
+    for (const edge of this.edges) {
+      const fromPath = selectedPaths.get(edge.from.value);
+      if (fromPath === null) continue;
+      //如果还能进行松弛，则证明有负权环
+      if (this.relaxforBellmanFord(edge, fromPath, selectedPaths)) {
+        return null;
+      }
+    }
+    selectedPaths.delete(begin);
+    return selectedPaths;
+  }
+  /**
+   *
+   * @param edge 需要松弛的边
+   * @param fromPath edge的from的最短路径信息
+   * @param paths 桌面的点的集合
+   * @returns
+   */
+  relaxforBellmanFord(
+    edge: Edge<V>,
+    fromPath: PathInfo<V>,
+    paths: Map<V, PathInfo<V>>
+  ) {
+    //以前的最短路径：beginVertex到edge.to的最短路径
+    let oldPath = paths.get(edge.to.value) || null;
+    const oldVertexNum = oldPath?.weight || null;
+    //新的可选择的最短路径：begeinVertex到edge.from的最短路径+edge.weight
+    const newVertexNum = fromPath.weight + edge.weight;
+    if (oldVertexNum !== null && oldVertexNum <= newVertexNum) return false;
+    if (oldVertexNum === null) {
+      oldPath = new PathInfo<V>(newVertexNum);
+      paths.set(edge.to.value, oldPath);
+    }
+    // const begin = paths.get(edge.to);
+    oldPath.weight = newVertexNum;
+    // newPathInfo.list.push(edge);
+    //先将之前的路径加进去
+    const prePath = fromPath;
+    //再加现在的
+    oldPath.list = [...prePath.list].concat(edge);
+    return true;
+  }
+  //Floyd o(V3)  多源最短路径算法  求出任意两个顶点之间的最短路径
+  //假设dist(i,j)为顶点i到顶点j的最短路径
+  //对于每个顶点K，检查dist(i,k)+dist(k,j)<dist(i,j)是否成立
+  //如果成立，则证明i到k再到j的路径比i直接到j的路径短，则dist(i,j)=dist(i,k)+dist(k,j)
+  shortestPathFloyd(): Map<V, Map<V, PathInfo<V>>> {
+    const paths: Map<V, Map<V, PathInfo<V>>> = new Map();
+    //初始化操作
+    for (const edge of this.edges) {
+      //拿出from点对应的map
+      let map: Map<V, PathInfo<V>> = paths.get(edge.from.value);
+      if (map === null) {
+        //如果没有则新建一个map
+        map = new Map<V, PathInfo<V>>();
+        //并把map和from绑定到paths里面
+        paths.set(edge.from.value, map);
+      }
+      //from到to的pathInfo
+      const pathInfo: PathInfo<V> = new PathInfo(edge.weight);
+      pathInfo.list.push(edge);
+      map.set(edge.to.value, pathInfo);
+    }
+    this.vertices.forEach((vertex2, v2) => {
+      this.vertices.forEach((vertex1, v1) => {
+        this.vertices.forEach((vertex3, v3) => {
+          if (v1 === v2 || v1 === v3 || v2 === v3) return;
+          //v1->v2
+          const path12 = paths.get(v1)?.get(v2);
+          if (path12 === null) return;
+          //v2->v3
+          const path23 = paths.get(v2)?.get(v3);
+          if (path23 === null) return;
+          //v1->v3
+          let path13 = paths.get(v1)?.get(v3);
+          const newWeight = path12?.weight + path23?.weight;
+          const oldWeight = path13?.weight;
+          if (path13 !== null && newWeight - oldWeight >= 0) return;
+          if (path13 === null) {
+            path13 = new PathInfo(0);
+            paths.get(v1).set(v3, path13);
+          }
+          path13.weight = newWeight;
+          // newPathInfo.list.push(edge);
+          //先将之前的路径加进去
+          const prePath1 = path12.list;
+          const prePath2 = path23.list;
+          //再加现在的
+          path13.list = [...prePath1].concat(prePath2);
+          return true;
+        });
+      });
+    });
+    return;
   }
 }

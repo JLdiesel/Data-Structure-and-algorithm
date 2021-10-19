@@ -22,6 +22,7 @@ function reverseList(head: ListNode | null): ListNode | null {
 
 function reverseList2(head: ListNode | null): ListNode | null {
   if (head === null || head.next === null) return head;
+  //newHead 翻转head.next的一个链表
   const newHead: ListNode = reverseList2(head.next);
   head.next.next = head;
   head.next = null;
