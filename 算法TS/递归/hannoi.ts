@@ -1,4 +1,4 @@
-//将n个碟子从p1移动到p3
+//将n个碟子从p1移动到p3  汉诺塔问题
 //o(n²)
 function hannoi(n: number, p1: string, p2: string, p3: string) {
   if (n <= 1) return move(n, p1, p3);
