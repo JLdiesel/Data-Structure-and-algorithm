@@ -1,3 +1,4 @@
+//内含前中后序遍历
 import Node from './TreeNode';
 
 class BrinaryTree<E> {
