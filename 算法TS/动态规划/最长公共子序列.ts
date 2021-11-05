@@ -63,7 +63,54 @@ function lcs3(nums1: string, nums2: string) {
   }
   return dp[nums1.length & 1][nums2.length];
 }
+//一维数组
+function lcs4(nums1: string, nums2: string) {
+  if (!nums1 || nums1.length === 0) return 0;
+  if (!nums2 || nums2.length === 0) return 0;
+  const dp: number[] = new Array(nums2.length + 1);
+  dp.fill(0);
 
-console.log(lcs3('abcba', 'abcbcba'));
+  for (let i = 1; i <= nums1.length; i++) {
+    let cur = 0;
 
+    for (let j = 1; j <= nums2.length; j++) {
+      let leftTop = cur;
+      cur = dp[j];
+      if (nums1[i - 1] === nums2[j - 1]) {
+        dp[j] = leftTop + 1;
+      } else {
+        dp[j] = Math.max(dp[j], dp[j - 1]);
+      }
+    }
+  }
+  return dp[nums2.length];
+}
+//用长度更短的数组当做列
+function lcs5(nums1: string, nums2: string) {
+  if (!nums1 || nums1.length === 0) return 0;
+  if (!nums2 || nums2.length === 0) return 0;
+  let rowsNums = nums1,
+    colsNums = nums2;
+  if (nums1.length < nums2.length) {
+    colsNums = nums1;
+    rowsNums = nums2;
+  }
+  const dp: number[] = new Array(colsNums.length + 1);
+  dp.fill(0);
+  for (let i = 1; i <= rowsNums.length; i++) {
+    let cur = 0;
+    for (let j = 1; j <= colsNums.length; j++) {
+      let leftTop = cur;
+      cur = dp[j];
+      if (rowsNums[i - 1] === colsNums[j - 1]) {
+        dp[j] = leftTop + 1;
+      } else {
+        dp[j] = Math.max(dp[j], dp[j - 1]);
+      }
+    }
+  }
+  return dp[colsNums.length];
+}
+console.log(lcs5('abcba', 'abcbcba'));
+export default {};
 //dp(i,j)是[nums1前i个元素]与[nums2前j个元素]的最长公共子序列长度

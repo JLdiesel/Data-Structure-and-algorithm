@@ -24,8 +24,8 @@
 // const quickSort=new QuickSort([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
 // quickSort.sort()
 
-import { lcs2 } from './算法TS/动态规划/最长公共子序列';
-console.log(lcs2('abcba', 'abcbcba'));
+// import { lcs2 } from './算法TS/动态规划/最长公共子序列';
+// console.log(lcs2('abcba', 'abcbcba'));
 
 /* import RBTree from './数据结构TS/10_Map'
 const RBT = new RBTree((e1: number, e2: number) => {
