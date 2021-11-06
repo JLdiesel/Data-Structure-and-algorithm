@@ -1,32 +1,31 @@
-import {Bubble} from './算法TS/排序算法/冒泡'
-import {Selection} from './算法TS/排序算法/选择'
-import {Heap} from './算法TS/排序算法/堆'
-import {Insert} from './算法TS/排序算法/插入'
-import {MergeSort} from './算法TS/排序算法/归并'
-import {QuickSort} from './算法TS/排序算法/快排'
-const bubble=new Bubble([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
-bubble.sort()
-const bubble2=new Bubble([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
-bubble2.sort2()
-const selection=new Selection([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
+// import {Bubble} from './算法TS/排序算法/冒泡'
+// import {Selection} from './算法TS/排序算法/选择'
+// import {Heap} from './算法TS/排序算法/堆'
+// import {Insert} from './算法TS/排序算法/插入'
+// import {MergeSort} from './算法TS/排序算法/归并'
+// import {QuickSort} from './算法TS/排序算法/快排'
+// const bubble=new Bubble([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
+// bubble.sort()
+// const bubble2=new Bubble([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
+// bubble2.sort2()
+// const selection=new Selection([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
 
-selection.sort()
-const heap=new Heap([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
-heap.sort()
-const insert=new Insert([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
-insert.sort()
-const insert2=new Insert([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
-insert2.sort2()
-const insert3=new Insert([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
-insert3.sort3()
-const mergeSort=new MergeSort([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
-mergeSort.sort()
-const quickSort=new QuickSort([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
-quickSort.sort()
+// selection.sort()
+// const heap=new Heap([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
+// heap.sort()
+// const insert=new Insert([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
+// insert.sort()
+// const insert2=new Insert([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
+// insert2.sort2()
+// const insert3=new Insert([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
+// insert3.sort3()
+// const mergeSort=new MergeSort([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
+// mergeSort.sort()
+// const quickSort=new QuickSort([2,5,6,7,12,6,7,87,545,3,2,45,77,343,1237,76])
+// quickSort.sort()
 
-
-
-
+// import { lcs2 } from './算法TS/动态规划/最长公共子序列';
+// console.log(lcs2('abcba', 'abcbcba'));
 
 /* import RBTree from './数据结构TS/10_Map'
 const RBT = new RBTree((e1: number, e2: number) => {
@@ -79,7 +78,6 @@ console.log(map); */
 // BH.remove()
 // BH.add(50)
 
-
 // console.log(BH);
 // import   './算法TS/Top_K问题(堆实现)'
 /* import Tire from './数据结构TS/13_Trie'
@@ -100,8 +98,3 @@ console.log(tire.startsWith('cata'));
 console.log(tire.startsWith('hehe'));
 console.log(tire.get('金龙')); 
  */
-
-
-
-
-
