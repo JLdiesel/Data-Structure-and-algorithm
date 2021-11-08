@@ -39,4 +39,21 @@ function knapsack(values: number[], weights: number[], capacity: number) {
   }
   return dp[values.length][capacity];
 }
-console.log(knapsack(values, weights, 10));
+function knapsack2(values: number[], weights: number[], capacity: number) {
+  if (!values || values.length === 0) return 0;
+  if (!weights || weights.length === 0) return 0;
+  if (values.length !== weights.length || capacity <= 0) return 0;
+  const dp: number[] = new Array(capacity + 1).fill(0);
+  for (let i = 1; i <= values.length; i++) {
+    for (let j = capacity; j >=weights[i-1] ; j--) {
+   
+        dp[j] = Math.max(
+          dp[j],
+          values[i - 1] + dp[j - weights[i - 1]]
+        );
+      
+    }
+  }
+  return dp[capacity];
+}
+console.log(knapsack2(values, weights, 10));
