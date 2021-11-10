@@ -98,23 +98,40 @@ console.log(tire.startsWith('cata'));
 console.log(tire.startsWith('hehe'));
 console.log(tire.get('金龙')); 
  */
-import { BloomFilter } from './数据结构TS/布隆过滤器/bloomFilter';
+
+/* import { BloomFilter } from './数据结构TS/布隆过滤器/bloomFilter';
 const bloomFilter = new BloomFilter(1000_000, 0.1);
-for (let i = 0; i <= 1000000; i++) {
+for (let i = 0; i <= 10000000; i++) {
   bloomFilter.put(i);
 }
 let trueCount = 0;
-for (let j = 0; j <= 1000000; j++) {
+for (let j = 0; j <= 5000000; j++) {
   if (!bloomFilter.contains(j)) {
     trueCount++;
   }
 }
-let count = 0;
-for (let j = 1000001; j <= 2000000; j++) {
-  if (bloomFilter.contains(j)) {
-    count++;
-  }
-}
+// let count = 0;
+// for (let j = 1000001; j <= 2000000; j++) {
+//   if (bloomFilter.contains(j)) {
+//     count++;
+//   }
+// }
 
 console.log(trueCount);
-console.log(count);
+// console.log(count); */
+import { SkipList } from './数据结构TS/跳表/skipList';
+const skipList = new SkipList((a: number, b: number) => a - b);
+const count = 100;
+// skipList.put(1, 'a');
+// skipList.put(2, 'b');
+
+for (let i = 0; i < count; i++) {
+  skipList.put(i, 'a' + i);
+}
+console.log(skipList);
+for (let i = 0; i < count; i++) {
+  console.log(skipList.get(i));
+}
+for (let i = 0; i < count; i++) {
+  console.log(skipList.remove(i));
+}
