@@ -17,6 +17,7 @@ function subSort(array: number[]): number[] {
       r = i;
     }
   }
+  if (r === -1) return [-1, -1];
   //从右扫描到左(正序：逐渐变大)
   let min: number = array[array.length - 1];
   let l: number = -1;
