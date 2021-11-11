@@ -1,3 +1,11 @@
+//一个元素的平均层数是1/(1-p)
+//p=.25 一个元素平均下来有1.33个指针
+//1层链表固定有n个元素
+//2层平均有n*p个元素
+//k层平均有n*p^k个元素
+//最高层的层数是log n    平均有1/p个元素
+//              1/p
+//在搜索时，每一层的链表预期查找步数最多是1/p,所以总的查找步数是-(logp n/p),时间复杂度是O(logn)
 export class SkipList<K, V> {
   private _size: number = 0;
   private compareator: (k2: K, k1: K) => number;
@@ -146,4 +154,3 @@ class Node<K, V> {
     }
   }
 }
-export {};
