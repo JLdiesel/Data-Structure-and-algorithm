@@ -7,5 +7,5 @@ function isPalindrome(x: number) {
   }
   return res === x || x === Math.floor(res / 10);
 }
-
 console.log(isPalindrome(1234321));
+export {};
