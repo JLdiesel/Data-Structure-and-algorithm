@@ -29,7 +29,40 @@ class MinStack {
     return this.stack2[this.stack2.length - 1];
   }
 }
+class MinStack2 {
+  private head: ListNode;
+  constructor() {
+    this.head = new ListNode(0, Number.MAX_VALUE, null);
+  }
 
+  push(val: number): void {
+    this.head = new ListNode(val, Math.min(val, this.head.val), this.head);
+  }
+
+  pop(): void {
+    this.head = this.head.next;
+  }
+
+  top(): number {
+    return this.head.val;
+  }
+
+  getMin(): number {
+    return this.head.min;
+  }
+}
+class ListNode {
+  val: number;
+  min: number;
+  next: ListNode | null;
+  constructor(val?: number, min?: number, next?: ListNode | null) {
+    this.val = val;
+    this.next = next;
+    this.min = min;
+  }
+}
+
+export {};
 /**
  * Your MinStack object will be instantiated and called as such:
  * var obj = new MinStack()
