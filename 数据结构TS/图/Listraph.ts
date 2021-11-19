@@ -503,6 +503,6 @@ export class Listraph<V> implements Graph<V> {
         });
       });
     });
-    return;
+    return paths;
   }
 }
