@@ -98,3 +98,6 @@ export class Insert extends Sort {
     console.log(this.arr);
   }
 }
+const sort = new Insert([2, 6, 1, 10, 8, 9, 5, 11, 0]);
+
+sort.sort3();
