@@ -7,15 +7,16 @@ function maxSubarray(nums: number[]) {
   if (!nums || nums.length === 0) return 0;
   const deps = new Array(nums.length);
   deps[0] = nums[0];
-  let max = Number.MIN_VALUE;
+  let max = nums[0];
   for (let i = 1; i < nums.length; i++) {
-    if (deps[i - 1] < 0) {
+    if (deps[i - 1] <= 0) {
       deps[i] = nums[i];
     } else {
       deps[i] = nums[i] + deps[i - 1];
     }
-    if (deps[i] > max) max = deps[i];
+    max = Math.max(deps[i], max);
   }
+
   console.log(max);
 }
 //空间O1 时间On
@@ -23,7 +24,7 @@ function maxSubarray2(nums: number[]) {
   if (!nums || nums.length === 0) return 0;
 
   let dep = nums[0];
-  let max = Number.MIN_VALUE;
+  let max = nums[0];
   for (let i = 1; i < nums.length; i++) {
     if (dep < 0) {
       dep = nums[i];
@@ -34,5 +35,5 @@ function maxSubarray2(nums: number[]) {
   }
   console.log(max);
 }
-maxSubarray2(nums);
+maxSubarray([1, 2]);
 export {};
