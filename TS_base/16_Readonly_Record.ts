@@ -23,3 +23,17 @@ const cats: Record<CatName, CatInfo> = {
 };
 
 cats.boris;
+
+type Key = 'jl' | 'why' | 'lyj';
+interface Value {
+  children: Record<Key, Value>;
+  name: string;
+  age: number;
+}
+
+const Person: Record<Key, Value> = {
+  jl: { children: undefined, name: 'jl', age: 19 },
+  why: undefined,
+  lyj: undefined,
+};
+export {};
