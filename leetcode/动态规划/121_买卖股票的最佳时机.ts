@@ -43,3 +43,4 @@ function maxSubarray2(nums: number[]) {
   return max;
 }
 console.log(maxProfit2([1, 4, 2]));
+export {};

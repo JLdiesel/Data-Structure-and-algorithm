@@ -41,13 +41,14 @@ class Trie<V> {
     return this.node(key) !== null;
   }
   add(key: string, value: V) {
-    if (!this.root) this.root = new TrieNode();
+    if (!this.root) this.root = new TrieNode(null);
     this.keyCheck(key);
     let node = this.root;
     for (const item of key) {
       let newnode = node.getChildren().get(item);
       if (newnode === null) {
-        newnode = new TrieNode();
+        newnode = new TrieNode(node);
+        newnode.character = item;
         node.getChildren().put(item, newnode);
       }
       node = newnode;
@@ -64,7 +65,27 @@ class Trie<V> {
     this._size++;
     return null;
   }
-  remove(key: string) {}
+  remove(key: string) {
+    //找到节点
+    let node = this.node(key);
+    //如果不是单词结尾，则不用作任何处理
+    if (node === null || !node.word) return null;
+    this._size--;
+
+    const oldVal = node.value;
+    if (node.children && !node.children.isEmpty()) {
+      node.word = false;
+      node.value = null;
+      return oldVal;
+    }
+    let parent: TrieNode<V> = null;
+    while ((parent = node.parent) !== null) {
+      parent.children.remove(node.character);
+      if (parent.word || !parent.children.isEmpty()) break;
+      node = parent;
+    }
+    return oldVal;
+  }
   startsWith(prefix: string) {
     if (this.root === null) return null;
     this.keyCheck(prefix);
@@ -77,11 +98,16 @@ class Trie<V> {
   }
 }
 class TrieNode<V> {
+  parent: TrieNode<V>;
   children: MapA<string, TrieNode<V>>;
+  character: string;
   value: V; //存储字母
   word: boolean; //是否为一个单词
   getChildren(): MapA<string, TrieNode<V>> {
     return this.children ? this.children : (this.children = new MapA());
+  }
+  constructor(parent: TrieNode<V>) {
+    this.parent = parent;
   }
 }
 export default Trie;
