@@ -18,24 +18,27 @@ function indexOf(text: string, pattern: string): number {
   }
   return pi === plen ? ti - pi : -1;
 }
-// function next1(pattern: string) {
-//   const len = pattern.length;
-//   const next = new Array(len);
-//   let i = 0;
-//   let n = (next[i] = -1);
-//   let imax = len - 1;
-//   while (i < imax) {
-//     if (n < 0 || pattern.charAt(i) === pattern.charAt(n)) {
-//       next[++i] = ++n;
-//     } else {
-//       n = next[n];
-//     }
-//   }
-//   return next;
-// }
-function next(pattern: string) {
+function next1(pattern: string): number[] {
   const len = pattern.length;
-  const next = new Array(len);
+  const next: number[] = new Array(len);
+  let i = 0;
+  let n = (next[i] = -1);
+  let imax = len - 1;
+  while (i < imax) {
+    if (n < 0 || pattern.charAt(i) === pattern.charAt(n)) {
+      next[++i] = ++n;
+    } else {
+      n = next[n];
+    }
+  }
+  return next;
+}
+console.log(next('abcdcabc'));
+console.log(next1('abcdcabc'));
+
+function next(pattern: string): number[] {
+  const len = pattern.length;
+  const next: number[] = new Array(len);
   let i = 0;
   let n = (next[i] = -1);
   let imax = len - 1;
