@@ -22,6 +22,7 @@ function next1(pattern: string): number[] {
   const len = pattern.length;
   const next: number[] = new Array(len);
   let i = 0;
+  //n=next[i]
   let n = (next[i] = -1);
   let imax = len - 1;
   while (i < imax) {
@@ -33,9 +34,7 @@ function next1(pattern: string): number[] {
   }
   return next;
 }
-console.log(next('abcdcabc'));
-console.log(next1('abcdcabc'));
-
+//优化  AAAAB。防止前缀字符重复，重复比较text[ti]与prattern[pi]
 function next(pattern: string): number[] {
   const len = pattern.length;
   const next: number[] = new Array(len);
@@ -58,3 +57,6 @@ function next(pattern: string): number[] {
   return next;
 }
 export {};
+console.log(next('abcdcabc'));
+console.log(next1('abcdcabc'));
+console.log(indexOf('abcdacabc', 'cab'));
