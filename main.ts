@@ -119,19 +119,45 @@ for (let j = 0; j <= 5000000; j++) {
 
 console.log(trueCount);
 // console.log(count); */
-import { SkipList } from './数据结构TS/跳表/skipList';
-const skipList = new SkipList((a: number, b: number) => a - b);
-const count = 100;
-// skipList.put(1, 'a');
-// skipList.put(2, 'b');
+// import { SkipList } from './数据结构TS/跳表/skipList';
+// const skipList = new SkipList((a: number, b: number) => a - b);
+// const count = 100;
+// // skipList.put(1, 'a');
+// // skipList.put(2, 'b');
 
-for (let i = 0; i < count; i++) {
-  skipList.put(i, 'a' + i);
+// for (let i = 0; i < count; i++) {
+//   skipList.put(i, 'a' + i);
+// }
+// console.log(skipList);
+// for (let i = 0; i < count; i++) {
+//   console.log(skipList.get(i));
+// }
+// for (let i = 0; i < count; i++) {
+//   console.log(skipList.remove(i));
+// }
+let arr = [
+  { id: 1, name: '部门1', pid: 0 },
+  { id: 2, name: '部门2', pid: 1 },
+  { id: 3, name: '部门3', pid: 1 },
+  { id: 4, name: '部门4', pid: 3 },
+  { id: 5, name: '部门5', pid: 4 },
+];
+
+const newArr = [];
+arr.forEach((item) => {
+  add(item, newArr[0]);
+});
+function add(oldObj, obj?) {
+  const pid = oldObj.pid;
+  if (pid === 0) return newArr.push({ ...obj, children: [] });
+  let root = obj;
+  let rid = root.id;
+  if (pid === rid) return obj.children.push({ ...obj, children: [] });
+  while (rid !== pid) {
+    obj.children.forEach((item) => {
+      add(oldObj, item);
+    });
+  }
 }
-console.log(skipList);
-for (let i = 0; i < count; i++) {
-  console.log(skipList.get(i));
-}
-for (let i = 0; i < count; i++) {
-  console.log(skipList.remove(i));
-}
+console.log(newArr);
+export default {};
