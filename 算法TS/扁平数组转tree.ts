@@ -20,7 +20,7 @@ arr.forEach((item) => {
     add(item, newArr);
   }
 });
-function add(oldObj, arrs) {
+function add(oldObj: arrType, arrs: Array<arrType>) {
   if (arrs.length === 0) return;
   const pid = oldObj.pid;
   arrs.forEach((item) => {
