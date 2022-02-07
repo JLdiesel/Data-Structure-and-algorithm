@@ -135,29 +135,16 @@ console.log(trueCount);
 // for (let i = 0; i < count; i++) {
 //   console.log(skipList.remove(i));
 // }
-let arr = [
-  { id: 1, name: '部门1', pid: 0 },
-  { id: 2, name: '部门2', pid: 1 },
-  { id: 3, name: '部门3', pid: 1 },
-  { id: 4, name: '部门4', pid: 3 },
-  { id: 5, name: '部门5', pid: 4 },
-];
 
-const newArr = [];
-arr.forEach((item) => {
-  add(item, newArr[0]);
-});
-function add(oldObj, obj?) {
-  const pid = oldObj.pid;
-  if (pid === 0) return newArr.push({ ...obj, children: [] });
-  let root = obj;
-  let rid = root.id;
-  if (pid === rid) return obj.children.push({ ...obj, children: [] });
-  while (rid !== pid) {
-    obj.children.forEach((item) => {
-      add(oldObj, item);
-    });
-  }
-}
-console.log(newArr);
 export default {};
+interface objtype {
+  arr?: Array<arrtype>;
+}
+interface arrtype {
+  a?: { b: number };
+}
+const arr = [1, 2, 3];
+const obj: objtype = {
+  arr: [],
+};
+console.log(obj?.arr?.[0].a?.b);

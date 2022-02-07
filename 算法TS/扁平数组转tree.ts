@@ -33,10 +33,10 @@ function add(oldObj: arrType, arrs: Array<arrType>) {
 }
 console.log(newArr);
 
-const newArr2 = [];
+const newArr2: Array<arrType> = [];
 const map = new Map<number, Array<arrType>>();
 arr.forEach((item) => {
-  const newItem = { ...item, children: [] };
+  const newItem: arrType = { ...item, children: [] };
   map.set(item.id, newItem.children);
   if (item.pid === 0) {
     newArr2.push(newItem);
