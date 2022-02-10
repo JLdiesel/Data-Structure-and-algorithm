@@ -12,13 +12,20 @@ const arr: Array<arrType> = [
   { id: 5, name: '部门5', pid: 4 },
 ];
 // 方法1  n^2
-// const newArr = arr
-//   .map((item) => ({
-//     ...item,
-//     children: arr.filter((i) => item.id === i.id),
-//   }))
-//   .filter((v) => Boolean(v.children));
-// console.log(newArr);
+function arrayToTreedg(items) {
+  let res = [];
+  function getChildren(res, pid) {
+    for (const i of items) {
+      if (i.pid === pid) {
+        const newItem = { ...i, children: [] };
+        res.push(newItem);
+        getChildren(newItem.children, newItem.id);
+      }
+    }
+  }
+  getChildren(res, 0);
+  return res;
+}
 
 //方法2  On
 const newArr2: Array<arrType> = [];
@@ -29,7 +36,6 @@ for (let item of arr) {
 }
 arr.forEach((item) => {
   const newItem = map.get(item.id);
-
   if (item.pid === 0) {
     newArr2.push(newItem);
   } else {
@@ -38,7 +44,7 @@ arr.forEach((item) => {
     parentItem.children.push(newItem);
   }
 });
-console.log(newArr2);
+// console.log(newArr2);
 
 //方法3   On
 function groupBy(arr, callback) {
@@ -55,7 +61,7 @@ function groupBy(arr, callback) {
 }
 const groupArr = groupBy(arr, (item) => item.pid);
 arr.forEach((item) => (item.children = groupArr[item.id]));
-console.log(groupArr[0]);
+// console.log(groupArr[0]);
 
 // on
 function arrayToTree(items) {
@@ -84,6 +90,6 @@ function arrayToTree(items) {
   }
   return res;
 }
-console.log(arrayToTree(arr));
+// console.log(arrayToTree(arr));
 
 export {};

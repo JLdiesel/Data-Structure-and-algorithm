@@ -37,7 +37,7 @@ class BrinarySearchTree<E> {
     this.root = null;
     this.size = 0;
   }
-  //前驱节点
+  //前驱节点  predecessor
   preNode(node: STNode<E>): STNode<E> {
     if (node === null) return null;
     //前驱节点在左子树中,(left.right.right..)
@@ -54,7 +54,7 @@ class BrinarySearchTree<E> {
     }
     return node.parent;
   }
-  //后继节点
+  //后继节点 successor
   nextNode(node: STNode<E>): STNode<E> {
     if (node === null) return null;
     //前驱节点在左子树中,(left.right.right..)
@@ -198,6 +198,31 @@ class BrinarySearchTree<E> {
     }
     this.size++;
   }
+  //Morris中序遍历
+  morris() {
+    let node = this.root;
+    while (node) {
+      if (node.Left) {
+        //找到前驱节点  node.left是不为空的
+        let prevNode = node.Left;
+        while (prevNode.right && prevNode.right !== node) {
+          prevNode = prevNode.right;
+        }
+        if (!prevNode.right) {
+          prevNode.right = node;
+          node = node.Left;
+        }
+        if (prevNode.right === node) {
+          prevNode.right = null;
+          console.log(node.element);
+          node = node.right;
+        }
+      } else {
+        console.log(node.element);
+        node = node.right;
+      }
+    }
+  }
   //前序遍历
   preorderTravsersal1(fn: (element: E) => void): void {
     this.preorderTravsersal(this.root, fn);
@@ -247,6 +272,81 @@ class BrinarySearchTree<E> {
       }
     }
   }
+  //前序遍历（非递归2）
+  preorder2(fn: (element: E) => void) {
+    if (!fn || this.root === null) return;
+    const arr: STNode<E>[] = [];
+    arr.push(this.root);
+    while (arr.length) {
+      const node = arr.pop();
+      fn(node.element);
+      if (node.right) {
+        arr.push(node.right);
+      }
+      if (node.Left) {
+        arr.push(node.Left);
+      }
+    }
+  }
+  //前序遍历(非递归)
+  preorder(fn: (element: E) => void) {
+    if (!fn || this.root === null) return;
+    const arr = [];
+    let node = this.root;
+    while (true) {
+      if (node !== null) {
+        fn(node.element);
+        if (node.right !== null) {
+          arr.push(node.right);
+        }
+        node = node.Left;
+      } else if (arr.length === 0) {
+        return;
+      } else {
+        node = arr.pop();
+      }
+    }
+  }
+  //中序遍历
+  inorder(fn: (element: E) => void) {
+    if (!fn || this.root === null) return;
+    const arr = [];
+    let node = this.root;
+    while (true) {
+      if (node !== null) {
+        arr.push(node.right);
+        node = node.Left;
+      } else if (arr.length === 0) {
+        return;
+      } else {
+        node = arr.pop();
+        fn(node.element);
+        node = node.right;
+      }
+    }
+  }
+  //后序遍历
+  postorder(fn: (element: E) => void) {
+    if (!fn || this.root === null) return;
+    const arr: STNode<E>[] = [];
+    let preNode: STNode<E>;
+    arr.push(this.root);
+    while (arr.length) {
+      let top = arr[arr.length - 1];
+      if (top.isLeaf() || (preNode && preNode.parent === top)) {
+        preNode = arr.pop();
+        fn(preNode.element);
+      } else {
+        if (top.right !== null) {
+          arr.push(top.right);
+        }
+        if (top.Left !== null) {
+          arr.push(top.Left);
+        }
+      }
+    }
+  }
+
   //根据一个元素查找对应节点
   private findNode(element: E): STNode<E> {
     let node: STNode<E> = this.root;
@@ -349,16 +449,15 @@ class Children {
 }
 let arr = [7, 4, 9, 2, 5];
 
-const BST2 = new BrinarySearchTree((e1: number, e2: number) => {
+const BST3 = new BrinarySearchTree((e1: number, e2: number) => {
   return e1 - e2;
 });
 arr.forEach((item) => {
-  BST2.add(item);
+  BST3.add(item);
 });
-BST2.remove(4);
-console.log(BST2);
+console.log(BST3);
 
-const BST = new BrinarySearchTree<Person>();
+// const BST = new BrinarySearchTree<Person>();
 /* arr.forEach(item => {
     BST.add(new Person(item))
 }) */
@@ -376,23 +475,25 @@ console.log(BST3.getsize()); */
 
 // console.log(BST3.isComplete());
 
-/* BST3.preorderTravsersal1((item) => {
-    console.log(item);
+BST3.preorderTravsersal1((item) => {
+  console.log(item);
 });
 console.log('前序结束');
 
 BST3.postorderTravsersal1((item) => {
-    console.log(item);
+  console.log(item);
 });
-console.log("后序结束");
+console.log('后序结束');
 
 BST3.inorderTravsersal1((item) => {
-    console.log(item);
+  console.log(item);
 });
-console.log("中序结束");
+console.log('中序结束');
 
 BST3.LevelOrderTravsersal((item) => {
-    console.log(item);
+  console.log(item);
 });
-console.log("层序结束"); */
+console.log('层序结束');
+BST3.morris();
+
 export default BrinarySearchTree;
