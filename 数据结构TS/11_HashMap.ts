@@ -4,11 +4,14 @@ class MapA<K, V> {
   size: number;
   private table: MTNode<K, V>[];
   private compare: (n1: K, n2: K) => number;
+  private DEFAULT_LOAD_FACTOR: number = 0.75; //负载因子 size节点个数 /table.length
   //默认容量
   private DEFAULT_CAPACITY = 1 << 4;
   constructor(compare?: (n1: K, n2: K) => number) {
     this.size = 0;
     this.compare = compare;
+    console.log(this.DEFAULT_CAPACITY);
+
     this.table = new Array(this.DEFAULT_CAPACITY).fill(null);
   }
   isEmpty() {
@@ -87,8 +90,9 @@ class MapA<K, V> {
   index(key: K): number {
     if (key === null) return 0;
     let hash = this.hashCode(key);
+    console.log(this.table.length);
 
-    return (hash ^ (hash >>> 16)) & (this.table.length - 1);
+    return hash & (this.table.length - 1);
   }
   private hashCode(key: K): number {
     let hashCode = 0;
@@ -126,8 +130,8 @@ class MapA<K, V> {
     return hashCode;
   }
   put(key: K, value: V): V {
+    this.resize();
     let index = this.index(key);
-
     //取出index位置的红黑树根节点
     let root = this.table[index];
     //添加第一个节点
@@ -212,6 +216,70 @@ class MapA<K, V> {
       }
       this.rotateLeft(grand);
     }
+  }
+  //扩容
+  private resize() {
+    if (this.size / this.table.length <= this.DEFAULT_LOAD_FACTOR) return;
+    const oldTable = this.table;
+    this.table = new Array<MTNode<K, V>>(oldTable.length << 1).fill(null);
+    //扩容后容量为原来的两倍  索引 1.保持不变  2.index=index+旧容量
+    const arr = [];
+    for (let i = 0; i < oldTable.length; i++) {
+      if (oldTable[i] === null) continue;
+      arr.push(oldTable[i]);
+      while (arr.length) {
+        const node: MTNode<K, V> = arr.pop();
+        if (node.Left) {
+          arr.push(node.Left);
+        }
+        if (node.right) {
+          arr.push(node.right);
+        }
+        this.moveNode(node);
+      }
+    }
+  }
+  private moveNode(newNode: MTNode<K, V>) {
+    //重置
+    newNode.parent = null;
+    newNode.Left = null;
+    newNode.right = null;
+    newNode.color = MapA.RED;
+    let index = this.index(newNode.key);
+
+    //取出index位置的红黑树根节点
+    let root = this.table[index];
+    //添加第一个节点
+    if (!root) {
+      root = newNode;
+      this.table[index] = root;
+      this.afterPut(root);
+      return;
+    }
+    //添加的不是第一个
+    let node: MTNode<K, V> = root;
+    let parentNode: MTNode<K, V> = root;
+    let result = 0;
+    let key = newNode.key;
+    let h1 = key === null ? 0 : this.hashCode(key);
+    do {
+      //比较器
+      result = this.compareTo(key, node.key, h1, node.hash);
+      parentNode = node;
+      //如果e1>e2，则找到右边
+      if (result > 0) {
+        node = node.right;
+      } else if (result < 0) {
+        node = node.Left;
+      }
+    } while (node !== null);
+    if (result > 0) {
+      parentNode.right = newNode;
+    } else if (result < 0) {
+      parentNode.Left = newNode;
+    }
+    newNode.parent = parentNode;
+    this.afterPut(newNode);
   }
   /**
    *

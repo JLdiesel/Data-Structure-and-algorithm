@@ -43,26 +43,28 @@ console.log(RBT.size);
 
 console.log(RBT);
  */
-/* import HashMap from './数据结构TS/11_HashMap'
+import HashMap from './数据结构TS/11_HashMap';
 const map = new HashMap();
 
-map.put('123','123')
-map.put('123',123)
-map.put('13','123')
-map.put(123,'123')
-map.put(166,'123')
-map.put({name:'jl'},'123')
-map.put({name:'jl'},'333')
-map.put(123, '163')
-console.log(map.get('123'));
-console.log(map.get({name:'jl'}));
-console.log(map.get(123));
-map.remove('123')
-map.remove(123)
-console.log(map.get(123));
+for (let i = 0; i < 1000; i++) {
+  map.put(i, i);
+}
+for (let i = 0; i < 1000; i++) {
+  map.put(i, i + 2);
+}
+for (let i = 0; i < 1000; i++) {
+  map.put(i, i + 3);
+}
+console.log(map);
 
-map.traversal()
-console.log(map); */
+// console.log(map.index(1));
+// console.log(map.index(2));
+// console.log(map.index(13));
+// console.log(map.index(4));
+// console.log(map.index(5));
+
+// map.traversal();
+
 // import BinaryHeap from './数据结构TS/12-BinaryHeap';
 // const BH = new BinaryHeap<number>((e1, e2) => e1 - e2)
 // BH.add(3)
@@ -135,7 +137,7 @@ console.log(trueCount);
 // for (let i = 0; i < count; i++) {
 //   console.log(skipList.remove(i));
 // }
-import { Listraph } from './数据结构TS/图/Listraph';
+/* import { Listraph } from './数据结构TS/图/Listraph';
 const graph = new Listraph<string>();
 graph.addVertex('c1');
 graph.addVertex('c2');
@@ -161,7 +163,7 @@ console.log('Dijkstra 单源最短路径算法', graph.shortestPath('c1'));
 console.log(' Dijkstra 能打印出路径点', graph.shortestPath2('c1'));
 console.log('Floyd o(V3)  多源最短路径算法 ', graph.shortestPathFloyd());
 console.log('bellmanFord', graph.bellmanFord('c1'));
-
+ */
 export default {};
 /* interface objtype {
   arr?: Array<arrtype>;
