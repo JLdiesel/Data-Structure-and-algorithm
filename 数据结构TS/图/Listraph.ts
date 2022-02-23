@@ -6,6 +6,10 @@ export class Listraph<V> implements Graph<V> {
   private vertices: Map<V, Vertex<V>>;
   //放着图中所有边
   private edges: Set<Edge<V>>;
+  constructor() {
+    this.vertices = new Map<V, Vertex<V>>();
+    this.edges = new Set<Edge<V>>();
+  }
   edgesSize(): number {
     return this.edges.size;
   }
@@ -171,7 +175,7 @@ export class Listraph<V> implements Graph<V> {
       }
     });
     //初始化，将度为0的节点都放入队列
-    while (!queue.length) {
+    while (queue.length) {
       let vertex = queue.shift();
       //放入度为0的节点
       list.push(vertex.value);
@@ -186,6 +190,7 @@ export class Listraph<V> implements Graph<V> {
         }
       }
     }
+    console.log(list);
   }
   mst(): Set<Edge<V>> {
     return this.prim();
@@ -307,7 +312,7 @@ export class Listraph<V> implements Graph<V> {
     }
     return {
       vertex: minVertex,
-      weight: minWeight,
+      weight: minWeight
     };
   }
   //最短路径查询算法 Dijkstra 能打印出路径点
@@ -384,14 +389,17 @@ export class Listraph<V> implements Graph<V> {
     let minVertex: Vertex<V> = null;
     let minWeight: PathInfo<V> = null;
     for (const item of paths.entries()) {
-      if (item[1].weight < minWeight.weight || minWeight === null) {
+      if (minWeight === null) {
+        minWeight = new PathInfo<V>(item[1].weight);
+        minVertex = item[0];
+      } else if (item[1].weight < minWeight.weight) {
         minWeight.weight = item[1].weight;
         minVertex = item[0];
       }
     }
     return {
       vertex: minVertex,
-      pathInfo: minWeight,
+      pathInfo: minWeight
     };
   }
   //对所有边都进行v:顶点个数-1次松弛操作
@@ -462,12 +470,13 @@ export class Listraph<V> implements Graph<V> {
     for (const edge of this.edges) {
       //拿出from点对应的map
       let map: Map<V, PathInfo<V>> = paths.get(edge.from.value);
-      if (map === null) {
+      if (!map) {
         //如果没有则新建一个map
         map = new Map<V, PathInfo<V>>();
         //并把map和from绑定到paths里面
         paths.set(edge.from.value, map);
       }
+
       //from到to的pathInfo
       const pathInfo: PathInfo<V> = new PathInfo(edge.weight);
       pathInfo.list.push(edge);
@@ -479,16 +488,16 @@ export class Listraph<V> implements Graph<V> {
           if (v1 === v2 || v1 === v3 || v2 === v3) return;
           //v1->v2
           const path12 = paths.get(v1)?.get(v2);
-          if (path12 === null) return;
+          if (!path12) return;
           //v2->v3
           const path23 = paths.get(v2)?.get(v3);
-          if (path23 === null) return;
+          if (!path23) return;
           //v1->v3
           let path13 = paths.get(v1)?.get(v3);
           const newWeight = path12?.weight + path23?.weight;
           const oldWeight = path13?.weight;
-          if (path13 !== null && newWeight - oldWeight >= 0) return;
-          if (path13 === null) {
+          if (path13 && newWeight - oldWeight >= 0) return;
+          if (!path13) {
             path13 = new PathInfo(0);
             paths.get(v1).set(v3, path13);
           }

@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-10-08 10:25:43
+ * @LastEditTime: 2022-02-23 10:53:20
+ * @LastEditors: your name
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \web\Data-Structure-and-algorithm\数据结构TS\图\Graph.ts
+ */
 export interface Graph<V> {
   edgesSize(): number;
   verticesSize(): number;
@@ -12,6 +20,8 @@ export class Vertex<V> {
   outEdges: Set<Edge<V>>;
   constructor(value: V) {
     this.value = value;
+    this.inEdges = new Set<Edge<V>>();
+    this.outEdges = new Set<Edge<V>>();
   }
   equals(obj: Vertex<V>) {
     return obj.value === this.value;

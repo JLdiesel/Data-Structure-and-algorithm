@@ -135,9 +135,35 @@ console.log(trueCount);
 // for (let i = 0; i < count; i++) {
 //   console.log(skipList.remove(i));
 // }
+import { Listraph } from './数据结构TS/图/Listraph';
+const graph = new Listraph<string>();
+graph.addVertex('c1');
+graph.addVertex('c2');
+graph.addVertex('c3');
+graph.addVertex('c4');
+graph.addVertex('c5');
+graph.addVertex('c6');
+graph.addVertex('c7');
+graph.addEdge('c1', 'c2', 1);
+graph.addEdge('c2', 'c3', 2);
+graph.addEdge('c2', 'c4', 3);
+graph.addEdge('c3', 'c5', 4);
+graph.addEdge('c4', 'c6', 5);
+graph.addEdge('c4', 'c3', 6);
+graph.addEdge('c5', 'c6', 7);
+graph.addEdge('c6', 'c7', 8);
+// console.log(graph.bfs('c1'));
+// console.log(graph.dfs('c1'));
+// console.log(graph.topologicalSort());
+console.log('prim切分算法', graph.mst()); // 切分算法
+console.log('kruskal生成树算法', graph.mst2());
+console.log('Dijkstra 单源最短路径算法', graph.shortestPath('c1'));
+console.log(' Dijkstra 能打印出路径点', graph.shortestPath2('c1'));
+console.log('Floyd o(V3)  多源最短路径算法 ', graph.shortestPathFloyd());
+console.log('bellmanFord', graph.bellmanFord('c1'));
 
 export default {};
-interface objtype {
+/* interface objtype {
   arr?: Array<arrtype>;
 }
 interface arrtype {
@@ -148,3 +174,4 @@ const obj: objtype = {
   arr: [],
 };
 console.log(obj?.arr?.[0].a?.b);
+ */
