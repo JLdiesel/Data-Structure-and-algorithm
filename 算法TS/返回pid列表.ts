@@ -20,22 +20,16 @@ const data = [
 const list = [1, 2, 3, 4, 5];
 //返回 [0,1,2,3,3]
 function getArr(data, list) {
-  const newList = new Array(list.length);
+  const map = new Map();
+
   function dfs(dataList, pid) {
     if (!dataList) return;
     for (const item of dataList) {
-      const cindex = list.indexOf(item.id);
-      if (cindex !== -1) {
-        if (item.id !== 1) {
-          newList[cindex] = pid;
-        } else {
-          newList[cindex] = 0;
-        }
-      }
+      map.set(item.id, pid);
       dfs(item.children, item.id);
     }
   }
-  dfs(data, 1);
-  return newList;
+  dfs(data, 0);
+  return list.map((item) => map.get(item));
 }
 console.log(getArr(data, list));

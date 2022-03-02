@@ -8,5 +8,9 @@ function myPow(x: number, n: number): number {
   return odd ? half * x : half;
 }
 function myPow2(x: number, n: number): number {
-  let res = 1;
+  let res = 1.0;
+  while () {
+      console.log(n&1);
+      
+  }
 }
