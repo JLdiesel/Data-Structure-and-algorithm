@@ -9,7 +9,7 @@ function combinationSum(candidates: number[], target: number): number[][] {
       list.push([...nums]);
       return;
     }
-    //因为数组是不重复的，所以第一个值取完之后
+    //因为数组是不重复的，所有值第一次只能取一次
     for (let i = begin; i < candidates.length; i++) {
       const item = candidates[i];
       if (item <= target) {
