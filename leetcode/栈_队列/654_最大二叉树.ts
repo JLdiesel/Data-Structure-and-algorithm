@@ -22,9 +22,11 @@ function constructMaximumBinaryTree(nums: number[]): TreeNode | null {
   return findRoot(nums, 0, nums.length);
 }
 function findRoot(nums: number[], left: number, right: number) {
+  //如果最大值和
   if (left === right) {
     return null;
   }
+  //找到最大值的下标
   let maxIndex = left;
   for (let i = left + 1; i < right; i++) {
     if (nums[i] > nums[maxIndex]) {

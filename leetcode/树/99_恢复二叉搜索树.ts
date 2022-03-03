@@ -42,7 +42,7 @@ function recoverTree(root: TreeNode | null): void {
   first.val = second.val;
   second.val = tmp;
 }
-
+//Morris遍历实现
 function recoverTree2(root: TreeNode) {
   let node: TreeNode = root;
   //上一次中序遍历过的节点
