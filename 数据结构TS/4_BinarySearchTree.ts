@@ -314,7 +314,7 @@ class BrinarySearchTree<E> {
     let node = this.root;
     while (true) {
       if (node !== null) {
-        arr.push(node.right);
+        arr.push(node);
         node = node.Left;
       } else if (arr.length === 0) {
         return;

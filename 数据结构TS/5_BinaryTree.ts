@@ -20,6 +20,81 @@ class BrinaryTree<E> {
     this.root = null;
     this.size = 0;
   }
+  //Morris中序遍历
+  morris() {
+    let node = this.root;
+    while (node) {
+      if (node.Left) {
+        //找到前驱节点  node.left是不为空的
+        let prevNode = node.Left;
+        while (prevNode.right && prevNode.right !== node) {
+          prevNode = prevNode.right;
+        }
+        if (!prevNode.right) {
+          prevNode.right = node;
+          node = node.Left;
+        }
+        if (prevNode.right === node) {
+          prevNode.right = null;
+          console.log(node.element);
+          node = node.right;
+        }
+      } else {
+        console.log(node.element);
+        node = node.right;
+      }
+    }
+  }
+  //前序遍历
+  preorderTravsersal1(fn: (element: E) => void): void {
+    this.preorderTravsersal(this.root, fn);
+  }
+  private preorderTravsersal(node: Node<E>, fn: (element) => void): void {
+    if (node === null) return;
+    fn(node.element);
+    this.preorderTravsersal(node.Left, fn);
+    this.preorderTravsersal(node.right, fn);
+  }
+
+  //中序遍历
+  inorderTravsersal1(fn: (element: E) => void): void {
+    this.inorderTravsersal(this.root, fn);
+  }
+  private inorderTravsersal(node: Node<E>, fn: (element) => void): void {
+    if (node === null) return;
+    this.inorderTravsersal(node.Left, fn);
+    fn(node.element);
+    this.inorderTravsersal(node.right, fn);
+  }
+  //后序遍历
+  postorderTravsersal1(fn: (element: E) => void): void {
+    this.postorderTravsersal(this.root, fn);
+  }
+  private postorderTravsersal(node: Node<E>, fn: (element) => void): void {
+    if (node === null) return;
+
+    this.postorderTravsersal(node.Left, fn);
+    this.postorderTravsersal(node.right, fn);
+    fn(node.element);
+  }
+  //层序遍历
+  LevelOrderTravsersal(fn: (element: E) => void): void {
+    if (this.root === null) return;
+    let node: Node<E>;
+    const arr: Array<Node<E>> = [];
+    arr.push(this.root);
+    while (arr.length !== 0) {
+      node = arr.shift();
+      fn(node.element);
+      if (node.Left) {
+        arr.push(node.Left);
+      }
+      if (node.right) {
+        arr.push(node.right);
+      }
+    }
+  }
+  //前序遍历（非递归2）
   preorder2(fn: (element: E) => void) {
     if (!fn || this.root === null) return;
     const arr: Node<E>[] = [];
@@ -61,9 +136,9 @@ class BrinaryTree<E> {
     let node = this.root;
     while (true) {
       if (node !== null) {
-        arr.push(node.right);
+        arr.push(node);
         node = node.Left;
-      } else if (arr.length === 0) {
+      } else if (!arr.length) {
         return;
       } else {
         node = arr.pop();
@@ -90,54 +165,6 @@ class BrinaryTree<E> {
         if (top.Left !== null) {
           arr.push(top.Left);
         }
-      }
-    }
-  }
-  //前序遍历
-  preorderTravsersal1(fn: (element) => void): void {
-    this.preorderTravsersal(this.root, fn);
-  }
-  private preorderTravsersal(node: Node<E>, fn: (element) => void): void {
-    if (node === null) return;
-    fn(node.element);
-    this.preorderTravsersal(node.Left, fn);
-    this.preorderTravsersal(node.right, fn);
-  }
-
-  //中序遍历
-  inorderTravsersal1(fn: (element: E) => void): void {
-    this.inorderTravsersal(this.root, fn);
-  }
-  private inorderTravsersal(node: Node<E>, fn: (element) => void): void {
-    if (node === null) return;
-    this.inorderTravsersal(node.Left, fn);
-    fn(node.element);
-    this.inorderTravsersal(node.right, fn);
-  }
-  //后序遍历
-  postorderTravsersal1(fn: (element: E) => void): void {
-    this.postorderTravsersal(this.root, fn);
-  }
-  private postorderTravsersal(node: Node<E>, fn: (element: E) => void): void {
-    if (node === null) return;
-    this.postorderTravsersal(node.Left, fn);
-    this.postorderTravsersal(node.right, fn);
-    fn(node.element);
-  }
-  //层序遍历
-  LevelOrderTravsersal(fn: (element: E) => void): void {
-    if (this.root === null) return;
-    let node: Node<E>;
-    const arr: Array<Node<E>> = [];
-    arr.push(this.root);
-    while (arr.length !== 0) {
-      node = arr.shift();
-      fn(node.element);
-      if (node.Left) {
-        arr.push(node.Left);
-      }
-      if (node.right) {
-        arr.push(node.right);
       }
     }
   }
