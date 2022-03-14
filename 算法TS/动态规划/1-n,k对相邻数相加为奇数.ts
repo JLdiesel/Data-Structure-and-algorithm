@@ -37,4 +37,4 @@ function ntok(n: number, k: number) {
   return dp[n][k - 1];
 }
 
-console.log(ntok(5, 1));
+console.log(ntok(6, 3));

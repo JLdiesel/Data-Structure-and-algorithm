@@ -43,7 +43,7 @@ console.log(RBT.size);
 
 console.log(RBT);
  */
-import HashMap from './数据结构TS/11_HashMap';
+/* import HashMap from './数据结构TS/11_HashMap';
 const map = new HashMap();
 
 for (let i = 0; i < 1000; i++) {
@@ -55,7 +55,7 @@ for (let i = 0; i < 1000; i++) {
 for (let i = 0; i < 1000; i++) {
   map.put(i, i + 3);
 }
-console.log(map);
+console.log(map); */
 
 // console.log(map.index(1));
 // console.log(map.index(2));
@@ -177,3 +177,4 @@ const obj: objtype = {
 };
 console.log(obj?.arr?.[0].a?.b);
  */
+import func from './leetcode/动态规划/所有乘积为正的连续子序列';
