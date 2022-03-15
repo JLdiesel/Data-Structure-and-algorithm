@@ -144,6 +144,22 @@ const BST2 = new BrinarySearchTree((e1: number, e2: number) => {
 arr.forEach((item) => {
   BST2.add(item);
 });
-console.log(BST2);
-
+console.log('morris');
+BST2.morris();
+console.log('preorder');
+BST2.preorder((item) => console.log(item));
+console.log('preorderTravsersal1');
+BST2.preorderTravsersal1((item) => console.log(item));
+console.log('preorder2');
+BST2.preorder2((item) => console.log(item));
+console.log('postorderTravsersal1');
+BST2.postorderTravsersal1((item) => console.log(item));
+console.log('postorder');
+BST2.postorder((item) => console.log(item));
+console.log('inorder');
+BST2.inorder((item) => console.log(item));
+console.log('inorderTravsersal1');
+BST2.inorderTravsersal1((item) => console.log(item));
+console.log('LevelOrderTravsersal');
+BST2.LevelOrderTravsersal((item) => console.log(item));
 export default BrinarySearchTree;

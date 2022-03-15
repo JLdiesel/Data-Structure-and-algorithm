@@ -72,7 +72,6 @@ class BrinaryTree<E> {
   }
   private postorderTravsersal(node: Node<E>, fn: (element) => void): void {
     if (node === null) return;
-
     this.postorderTravsersal(node.Left, fn);
     this.postorderTravsersal(node.right, fn);
     fn(node.element);

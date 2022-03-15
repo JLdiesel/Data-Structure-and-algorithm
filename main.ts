@@ -177,4 +177,3 @@ const obj: objtype = {
 };
 console.log(obj?.arr?.[0].a?.b);
  */
-import func from './leetcode/动态规划/所有乘积为正的连续子序列';
