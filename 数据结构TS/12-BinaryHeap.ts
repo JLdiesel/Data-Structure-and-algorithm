@@ -120,6 +120,7 @@ class BinaryHeap<E> {
     }
     return root;
   }
+
   /**
    *
    * @param elements 传入一个数组批量建堆
