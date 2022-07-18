@@ -23,9 +23,17 @@ class ArrayList<T> implements ArrayType<T> {
   add(index: number, element: T): void;
   add(index: unknown, element?: T): void {
     if (element) {
-      console.log(element);
+      //添加index element
+      if (index < 0 || index > this._size) {
+        throw new Error(`index:${index} but size:${this._size}`);
+      }
+      for (let i = this._size - 1; i >= index; i--) {
+        this.elements[i + 1] = this.elements[i];
+      }
+      this.elements[index as number] = element;
+      this._size++;
     } else {
-      this.checkIndex(index as number);
+      this.elements[this._size--] = index as T;
     }
   }
 
@@ -40,16 +48,22 @@ class ArrayList<T> implements ArrayType<T> {
     return old;
   }
   remove(index: number): T {
-    throw new Error('Method not implemented.');
+    const oldValue = this.elements[index];
+    for (let i = index + 1; i <= this._size; i++) {
+      this.elements[i - 1] = this.elements[i];
+    }
+    this._size--;
+    return oldValue;
   }
   indexOf(element: T): number {
     throw new Error('Method not implemented.');
   }
   clear(): void {
+    this._size = 0;
     throw new Error('Method not implemented.');
   }
   checkIndex(index: number) {
-    if (index < 0 || index > this._size) {
+    if (index < 0 || index >= this._size) {
       throw new Error(`index:${index} but size:${this._size}`);
     }
   }
