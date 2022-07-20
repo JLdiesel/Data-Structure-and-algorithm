@@ -8,7 +8,7 @@
 //在搜索时，每一层的链表预期查找步数最多是1/p,所以总的查找步数是-(logp n/p),时间复杂度是O(logn)
 export class SkipList<K, V> {
   private _size: number = 0;
-  private compareator: (k2: K, k1: K) => number;
+  private comparator: (k2: K, k1: K) => number;
   static p = 0.25;
   //最大层数
   static MAX_LEVEL = 32;
@@ -16,8 +16,8 @@ export class SkipList<K, V> {
   private level = 3;
   //不存放任何KV
   private first: Node<K, V>;
-  constructor(compareator: (k2: K, k1: K) => number) {
-    this.compareator = compareator;
+  constructor(comparator: (k2: K, k1: K) => number) {
+    this.comparator = comparator;
     this.first = new Node(null, null, SkipList.MAX_LEVEL);
     this.first.nexts = new Array(SkipList.MAX_LEVEL);
     for (let i = 0; i < SkipList.MAX_LEVEL; i++) {
@@ -26,7 +26,7 @@ export class SkipList<K, V> {
   }
 
   cmp(k1: K, k2: K) {
-    return this.compareator(k1, k2);
+    return this.comparator(k1, k2);
   }
   size() {
     return this._size;
@@ -88,7 +88,6 @@ export class SkipList<K, V> {
     //first.nexts[0]===1节点
     //first.nexts[k]===2^k节点
     let node = this.first;
-
     for (let i = this.level - 1; i >= 0; i--) {
       let cmp = -1;
       while (

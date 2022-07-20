@@ -5,7 +5,12 @@ const msg4: string = '';
 const arr1: string[] = [];
 //!!把其他数据类型转化为boolean
 let ismsg = !!arr1;
-console.log(ismsg);
+let abc = !!msg3;
+let bca = !!msg4;
+console.log(abc);//false
+console.log(bca);//false
+
+console.log(ismsg); //true
 if (arr1) {
   console.log(123);
 }

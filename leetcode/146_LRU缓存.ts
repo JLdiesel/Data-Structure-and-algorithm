@@ -19,7 +19,6 @@ class LRUCache {
     this.map = new Map<number, ListNode>();
     this.capacity = capacity;
     this.first = new ListNode();
-
     this.last = new ListNode();
     this.first.next = this.last;
     this.last.prev = this.first;

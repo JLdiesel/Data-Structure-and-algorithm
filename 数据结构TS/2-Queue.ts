@@ -3,7 +3,7 @@ class Queue {
   constructor() {
     this.items = [];
   }
-  push(element: Number) {
+   push(element: Number) {
     this.items.push(element);
   }
   //删除第一个数值
