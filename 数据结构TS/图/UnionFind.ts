@@ -4,6 +4,9 @@ export class UnionFind<V> {
   constructor() {
     this.nodes = new Map();
   }
+  makeSet2() {
+    
+  }
   makeSet(v: V) {
     if (this.nodes.get(v)) return;
     this.nodes.set(v, new Node(v));

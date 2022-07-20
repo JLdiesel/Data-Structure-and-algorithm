@@ -29,3 +29,4 @@ function permute4(nums: number[]) {
   }
   return list;
 }
+console.log(permute4([1,2,3,4,5]));
