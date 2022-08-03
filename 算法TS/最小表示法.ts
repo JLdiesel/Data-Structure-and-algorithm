@@ -10,8 +10,8 @@ function getMin(s: string) {
       b = s[(j + k) % n];
     if (a == b) k++;
     else {
-      if (a > b) i += k + 1;
-      else j += k + 1;
+      a > b ? (i += k + 1) : (j += k + 1);
+
       if (i == j) i++;
       k = 0;
     }
