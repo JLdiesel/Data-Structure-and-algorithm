@@ -12,7 +12,7 @@ function merge(nums1: number[], m: number, nums2: number[], n: number): void {
   let i2 = n - 1;
   let cur = nums1.length - 1;
   while (i2 >= 0) {
-    if (i1 >= 0 && nums1[i1] > nums2[i2]) {
+    if (nums1[i1] > nums2[i2]) {
       nums1[cur] = nums1[i1--];
     } else {
       nums1[cur] = nums2[i2--];
@@ -20,6 +20,33 @@ function merge(nums1: number[], m: number, nums2: number[], n: number): void {
     cur--;
   }
 }
+function merge2(nums1: number[], m: number, nums2: number[], n) {
+  let le = m - 1,
+    mi = nums1.length - 1,
+    re = n - 1;
+
+  while (re >= 0) {
+    if (nums1[le] > nums2[re]) {
+      nums1[mi] = nums1[le--];
+      if (le < 0) {
+        mi--;
+        break;
+      }
+    } else {
+      nums1[mi] = nums2[re--];
+    }
+    mi--;
+  }
+
+  while (re >= 0) {
+    nums1[mi--] = nums2[re--];
+  }
+
+  return nums1;
+}
+const arr1 = [2, 0];
+const arr2 = [1];
+const result = merge(arr1, 1, arr2, 1);
 
 merge(nums1, 3, nums2, 3);
 console.log(nums1);
