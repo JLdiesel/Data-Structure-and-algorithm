@@ -20,4 +20,11 @@ function printMessage(msg?: string) {
 }
 printMessage();
 
+function abc(a:number) {
+  if (typeof a === 'number') {
+  return a    
+  } else if (typeof a === 'string') {
+    return a 
+  }
+}
 export {};

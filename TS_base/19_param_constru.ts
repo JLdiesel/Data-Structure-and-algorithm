@@ -2,31 +2,30 @@
 //根据函数类型的参数中使用的类型构造元组类型Type
 declare function f1(arg: { a: number; b: string }): void;
 
+//type T0 = []
 type T0 = Parameters<() => string>;
 
-//type T0 = []
-type T1 = Parameters<(s: string) => void>;
-
 //type T1 = [s: string]
-type T2 = Parameters<<T>(arg: T) => T>;
-
+type T1 = Parameters<(s: string) => void>;
 //type T2 = [arg: unknown]
-type T3 = Parameters<typeof f1>;
-
+type T2 = Parameters<<T>(arg: T) => T>;
 //type T3 = [arg: {
 //    a: number;
 //    b: string;
 //}]
-type T4 = Parameters<any>;
+type T3 = Parameters<typeof f1>;
+
 
 //type T4 = unknown[]
-type T5 = Parameters<never>;
+type T4 = Parameters<any>;
 
 //type T5 = never
+type T5 = Parameters<never>;
 
-// type T6 = Parameters<string>;
 
 //类型“string”不满足约束“(...args: any) => any”.
+// type T6 = Parameters<string>;
+
 //type T6 = never
 
 // type T7 = Parameters<Function>;

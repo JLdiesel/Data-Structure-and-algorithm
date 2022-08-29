@@ -19,3 +19,4 @@ type _T = never extends 'jl'
       : 5
     : 6
   : 7;
+type G=never extends 'jl'?1:2
