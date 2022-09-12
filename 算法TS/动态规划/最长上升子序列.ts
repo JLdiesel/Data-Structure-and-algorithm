@@ -1,4 +1,5 @@
-const nums = [10, 7, 101, 18];
+const nums = [10, 7, 101, 18, 180, 20, 30];
+
 function longestUp(nums: number[]) {
   if (!nums || nums.length === 0) return 0;
   const dp: number[] = new Array(nums.length).fill(1);
@@ -45,6 +46,7 @@ function longestUp3(nums: number[]) {
     let end = len;
     while (begin < end) {
       let mid = (begin + end) >> 1;
+
       if (num <= top[mid]) {
         //右开
         end = mid;
@@ -56,9 +58,11 @@ function longestUp3(nums: number[]) {
     top[begin] = num;
     if (begin === len) len++;
   }
+  console.log(top);
+
   return len;
 }
 
-console.log(longestUp3(nums));
+console.log(longestUp3([2, 3, 1, 5, 6, 8, 7, 9, 4]));
 
-export {};
+export { };
