@@ -37,3 +37,37 @@ function partition(head: ListNode | null, x: number): ListNode | null {
   lTail.next = rHead.next;
   return lHead.next;
 }
+
+
+/**
+ * @param {ListNode} head
+ * @param {number} x
+ * @return {ListNode}
+ */
+var partition2 = function (head, x) {
+  const vp = new ListNode(null)
+  vp.next = head;
+  let minEnd = vp, maxEnd = vp
+  while (head) {
+    const p = head.next
+    if (head.val < x) {
+      if (minEnd.next != head) {
+        const maxStart = minEnd.next
+        minEnd.next = head
+        head.next = maxStart
+        minEnd = head
+        maxEnd.next = p
+        head = p
+      } else {
+        minEnd = head
+        head = p
+        maxEnd = maxEnd.next
+      }
+    } else {
+      head = p
+      maxEnd = maxEnd.next
+    }
+  }
+  return vp.next
+
+};
