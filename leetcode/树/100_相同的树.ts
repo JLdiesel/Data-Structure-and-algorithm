@@ -19,8 +19,8 @@ var isSameTree = function (p, q) {
   stark.push(p);
   stark2.push(q);
   while (stark.length || stark2.length) {
-    const node = stark.pop();
-    const node2 = stark2.pop();
+    const node = stark.shift();
+    const node2 = stark2.shift();
     if (node?.val !== node2?.val) return false;
     if (node.left || node2.left) {
       stark.push(node.left);
