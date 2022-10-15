@@ -55,4 +55,56 @@ var calculate = function (s: string) {
   }
   return calc(s, 0, s.length - 1);
 };
-console.log(calculate('1+(4/2)+1+1'));
+function calculate2(s: string) {
+  function level(num) {
+    switch (num) {
+      case '@':
+        return -1;
+      case '+':
+      case '-':
+        return 1;
+      case '*':
+      case '/':
+        return 10;
+      default:
+        return 0;
+    }
+  }
+  function calc(n1, opt, n2) {
+    switch (opt) {
+      case '+':
+        return n1 + n2;
+      case '-':
+        return n1 - n2;
+      case '*':
+        return n1 * n2;
+      case '/':
+        return n1 / n2;
+    }
+    return 0;
+  }
+  const num = [];
+  const opts = [];
+  s += '@';
+  let n = 0;
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === ' ') continue;
+    if (level(s[i]) === 0) {
+      n = n * 10 + Number(s[i]);
+      continue;
+    }
+    num.push(n);
+    n = 0;
+    while (opts.length && level(s[i]) <= level(opts[opts.length - 1])) {
+      const opt = opts.pop();
+      const num2 = num.pop();
+      const num1 = num.pop();
+      num.push(calc(num1, opt, num2));
+    }
+    opts.push(s[i]);
+  }
+  console.log(num);
+
+  return num[num.length - 1];
+}
+console.log(calculate2('1+2*3'));
