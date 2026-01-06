@@ -30,7 +30,6 @@ export class QuickSort extends Sort {
     this.swap(begin, begin + Math.floor(Math.random() * (end - begin)));
     //备份begin位置的元素
     let pivot = this.arr[begin];
-    //[0,end-begin)
     //end为右开，需要--才能选择到最后一个元素
     end--;
     while (begin < end) {

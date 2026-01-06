@@ -16,7 +16,7 @@ function placeQueens(n: number) {
   place(0);
   console.log(ways);
 }
-placeQueens(8);
+placeQueens(3);
 /**
  * 从第row行开始摆放皇后
  * @param row

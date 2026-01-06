@@ -10,7 +10,7 @@ function placeQueens(n: number) {
   place(0);
   console.log(ways);
 }
-placeQueens(8);
+placeQueens(1);
 /**
  * 从第row行开始摆放皇后
  * @param row
@@ -46,14 +46,17 @@ function isValid(row: number, col: number) {
 //展示
 function show() {
   for (let row = 0; row < cols.length; row++) {
+    let str = '';
     for (let col = 0; col < cols.length; col++) {
       //如果第row行的皇后位置等于列
       if (cols[row] === col) {
-        console.log('1 ');
+        str += '1 ';
       } else {
-        console.log('0 ');
+        str += '0 ';
       }
     }
+    console.log(str);
+    str = '';
     console.log();
   }
   console.log('---------------------');
